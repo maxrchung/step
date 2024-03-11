@@ -4,7 +4,7 @@ import {
   ArrowForwardIcon,
   ArrowBackIcon,
 } from "@chakra-ui/icons";
-import { Flex, Grid, chakra } from "@chakra-ui/react";
+import { Flex, Grid, chakra, useBoolean } from "@chakra-ui/react";
 import { useState } from "react";
 
 // TODO:
@@ -76,6 +76,8 @@ const ArrowComponents = [
 const StepButton = ({ arrowIndex, initialHasNote }: StepButtonProps) => {
   const ArrowComponent = ArrowComponents[arrowIndex];
   const [hasNote, setHasNote] = useState(initialHasNote);
+  const [isHover, setIsHover] = useBoolean();
+  const shouldShowArrow = hasNote || isHover;
 
   return (
     <chakra.button
@@ -85,6 +87,8 @@ const StepButton = ({ arrowIndex, initialHasNote }: StepButtonProps) => {
       display="flex"
       justifyContent="center"
       h="16"
+      onMouseEnter={setIsHover.on}
+      onMouseLeave={setIsHover.off}
     >
       <chakra.hr
         pos="absolute"
@@ -93,7 +97,7 @@ const StepButton = ({ arrowIndex, initialHasNote }: StepButtonProps) => {
         top="50%"
         transform="translateY(-50%)"
       />
-      {hasNote && (
+      {shouldShowArrow && (
         <ArrowComponent
           pos="absolute"
           top="50%"
@@ -102,7 +106,7 @@ const StepButton = ({ arrowIndex, initialHasNote }: StepButtonProps) => {
           onClick={() => setHasNote(false)}
           w={16}
           h={16}
-          color="red"
+          color={hasNote ? "red" : "grey"}
         />
       )}
     </chakra.button>
