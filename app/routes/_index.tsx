@@ -7,9 +7,6 @@ import {
 import { Flex, Grid, chakra, useBoolean } from "@chakra-ui/react";
 import { useState } from "react";
 
-// TODO:
-//
-
 const data = [
   [0, 3, 5, 20],
   [2, 4, 8, 20],
@@ -21,18 +18,12 @@ const MAX_NOTES = 140;
 
 export default function Index() {
   return (
-    <Grid
-      templateColumns="repeat(4, 1fr)"
-      autoRows="auto"
-      w="container.sm"
-      p="8"
-      flexDirection="column-reverse"
-    >
+    <Flex p={8} justifyContent="center">
       <Column data={data} index={0} />
       <Column data={data} index={1} />
       <Column data={data} index={2} />
       <Column data={data} index={3} />
-    </Grid>
+    </Flex>
   );
 }
 
@@ -58,7 +49,11 @@ const Column = ({ data, index }: ColumnProps) => {
     );
   }
 
-  return <Flex flexDirection="column-reverse">{stepButtons}</Flex>;
+  return (
+    <Flex w={8} flexDirection="column-reverse">
+      {stepButtons}
+    </Flex>
+  );
 };
 
 interface StepButtonProps {
@@ -86,7 +81,7 @@ const StepButton = ({ arrowIndex, initialHasNote }: StepButtonProps) => {
       bg="gray.100"
       display="flex"
       justifyContent="center"
-      h="16"
+      h="8"
       onMouseEnter={setIsHover.on}
       onMouseLeave={setIsHover.off}
     >
@@ -96,6 +91,7 @@ const StepButton = ({ arrowIndex, initialHasNote }: StepButtonProps) => {
         width="100%"
         top="50%"
         transform="translateY(-50%)"
+        opacity="0.5"
       />
       {shouldShowArrow && (
         <ArrowComponent
@@ -104,8 +100,8 @@ const StepButton = ({ arrowIndex, initialHasNote }: StepButtonProps) => {
           transform="translateY(-50%)"
           zIndex={100}
           onClick={() => setHasNote(false)}
-          w={16}
-          h={16}
+          w={10}
+          h={10}
           color={hasNote ? "red" : "grey"}
         />
       )}
