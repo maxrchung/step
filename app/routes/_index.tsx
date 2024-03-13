@@ -7,45 +7,61 @@ import {
 import { Flex, chakra, useBoolean } from "@chakra-ui/react";
 import { useState } from "react";
 
-const data = [
-  [0, 3, 5, 20],
-  [2, 4, 8, 20],
-  [1, 2, 3],
-  [4, 5, 6],
-];
-
 const MAX_NOTES = 140;
 
 export default function Index() {
+  const [data, setData] = useState<number[][]>([
+    [0, 3, 5, 20],
+    [2, 4, 8, 20],
+    [1, 2, 3],
+    [4, 5, 6],
+  ]);
+
   return (
     <Flex p={8} justifyContent="center">
-      <Column data={data} index={0} />
-      <Column data={data} index={1} />
-      <Column data={data} index={2} />
-      <Column data={data} index={3} />
+      <Column data={data} setData={setData} index={0} />
+      <Column data={data} setData={setData} index={1} />
+      <Column data={data} setData={setData} index={2} />
+      <Column data={data} setData={setData} index={3} />
     </Flex>
   );
 }
 
 interface ColumnProps {
   data: number[][];
+  setData: (data: number[][]) => void;
   index: number;
 }
 
-const Column = ({ data, index }: ColumnProps) => {
+const Column = ({ data, setData, index }: ColumnProps) => {
   const column = data[index];
 
-  let columnIndex = column.length - 1;
+  const setStep =
+    (columnIndex: number, stepIndex: number) => (isShown: boolean) => {
+      data[columnIndex] = isShown
+        ? // Add step
+          [...data[columnIndex], stepIndex].sort((a, b) => a - b)
+        : // Remove step
+          data[columnIndex].filter((step) => step !== stepIndex);
+      setData([...data]);
+    };
+
+  let stepIndex = column.length - 1;
   const stepButtons = [];
 
   for (let i = MAX_NOTES; i >= 0; --i) {
-    const hasNote = column[columnIndex] === i;
+    const hasNote = column[stepIndex] === i;
     if (hasNote) {
-      --columnIndex;
+      --stepIndex;
     }
 
     stepButtons.push(
-      <StepButton key={i} arrowIndex={index} initialHasNote={hasNote} />
+      <StepButton
+        key={i}
+        columnIndex={index}
+        setStep={setStep(index, i)}
+        hasStep={hasNote}
+      />
     );
   }
 
@@ -57,27 +73,27 @@ const Column = ({ data, index }: ColumnProps) => {
 };
 
 interface StepButtonProps {
-  arrowIndex: number;
-  initialHasNote: boolean;
+  columnIndex: number;
+  setStep: (isShown: boolean) => void;
+  hasStep: boolean;
 }
 
-const ArrowComponents = [
+const StepComponents = [
   ArrowBackIcon,
   ArrowDownIcon,
   ArrowUpIcon,
   ArrowForwardIcon,
 ];
 
-const StepButton = ({ arrowIndex, initialHasNote }: StepButtonProps) => {
-  const ArrowComponent = ArrowComponents[arrowIndex];
-  const [hasNote, setHasNote] = useState(initialHasNote);
+const StepButton = ({ columnIndex, setStep, hasStep }: StepButtonProps) => {
+  const StepComponent = StepComponents[columnIndex];
   const [isHover, setIsHover] = useBoolean();
-  const [isArrowHover, setIsArrowHover] = useBoolean();
-  const shouldShowArrow = hasNote || isHover;
+  const [isStepHover, setIsStepHover] = useBoolean();
+  const shouldShowStep = hasStep || isHover;
 
   return (
     <chakra.button
-      onClick={() => setHasNote(!hasNote)}
+      onClick={hasStep ? undefined : () => setStep(true)}
       position="relative"
       bg="gray.100"
       display="flex"
@@ -93,23 +109,23 @@ const StepButton = ({ arrowIndex, initialHasNote }: StepButtonProps) => {
         transform="translateY(-50%)"
         borderColor="gray.300"
       />
-      {shouldShowArrow && (
-        <ArrowComponent
+      {shouldShowStep && (
+        <StepComponent
           pos="absolute"
           top="50%"
           transform="translateY(-50%)"
           zIndex={100}
-          onClick={() => setHasNote(false)}
+          onClick={() => setStep(false)}
           w={10}
           h={10}
-          onMouseEnter={setIsArrowHover.on}
-          onMouseLeave={setIsArrowHover.off}
+          onMouseEnter={setIsStepHover.on}
+          onMouseLeave={setIsStepHover.off}
           color={
-            hasNote && isArrowHover
+            hasStep && isStepHover
               ? "red.400"
-              : hasNote
+              : hasStep
               ? "red.500"
-              : "gray.400"
+              : "gray.300"
           }
         />
       )}
