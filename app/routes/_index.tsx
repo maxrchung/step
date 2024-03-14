@@ -5,9 +5,10 @@ import {
   ArrowBackIcon,
 } from "@chakra-ui/icons";
 import { Flex, chakra, useBoolean } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const MAX_NOTES = 140;
+const DEBOUNCE_TIME = 1000;
 
 export default function Index() {
   const [data, setData] = useState<number[][]>([
@@ -16,6 +17,13 @@ export default function Index() {
     [1, 2, 3],
     [4, 5, 6],
   ]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      console.log(data);
+    }, DEBOUNCE_TIME);
+    return () => clearTimeout(timeout);
+  }, [data]);
 
   return (
     <Flex p={8} justifyContent="center">
