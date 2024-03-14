@@ -1,4 +1,4 @@
-import { Button, Icon } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import GoogleIcon from "./GoogleIcon";
 
 export default function GoogleSignInButton() {

@@ -9,6 +9,7 @@ import {
   ScrollRestoration,
   useCatch,
 } from "@remix-run/react";
+import Nav from "./components/Nav";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -45,6 +46,7 @@ export default function App() {
   return (
     <Document>
       <ChakraProvider>
+        <Nav />
         <Outlet />
       </ChakraProvider>
     </Document>

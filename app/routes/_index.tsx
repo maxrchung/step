@@ -26,7 +26,7 @@ export default function Index() {
   }, [data]);
 
   return (
-    <Flex p={8} justifyContent="center">
+    <Flex p={8} justify="center">
       <Column data={data} setData={setData} index={0} />
       <Column data={data} setData={setData} index={1} />
       <Column data={data} setData={setData} index={2} />
@@ -74,7 +74,7 @@ const Column = ({ data, setData, index }: ColumnProps) => {
   }
 
   return (
-    <Flex w={8} flexDirection="column-reverse">
+    <Flex w={8} direction="column-reverse">
       {stepButtons}
     </Flex>
   );
