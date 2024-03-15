@@ -1,7 +1,7 @@
-import { SearchIcon } from "@chakra-ui/icons";
-import { Button, Flex, IconButton } from "@chakra-ui/react";
+import { Avatar, Button, Flex, IconButton } from "@chakra-ui/react";
 import { Link } from "@remix-run/react";
 import GitHubIcon from "./GitHubIcon";
+import GoogleIcon from "./GoogleIcon";
 
 export default function Nav() {
   return (
@@ -23,6 +23,8 @@ export default function Nav() {
           aria-label="GitHub"
           icon={<GitHubIcon />}
         />
+        <IconButton aria-label="Google sign in" icon={<GoogleIcon />} />
+        <IconButton aria-label="Profile" icon={<Avatar size="xs" />} />
       </Flex>
     </Flex>
   );
