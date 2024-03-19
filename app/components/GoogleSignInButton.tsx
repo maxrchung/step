@@ -1,9 +1,13 @@
 import { Button } from "@chakra-ui/react";
 import GoogleIcon from "./GoogleIcon";
 
-export default function GoogleSignInButton() {
+interface GoogleSignInButtonProps {
+  url: string;
+}
+
+export default function GoogleSignInButton({ url }: GoogleSignInButtonProps) {
   return (
-    <Button display="flex" gap="2" alignItems="center">
+    <Button as="a" display="flex" gap="2" alignItems="center" href={url}>
       <GoogleIcon />
       Sign in with Google
     </Button>

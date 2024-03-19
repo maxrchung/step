@@ -17,22 +17,25 @@ export default {
         primaryIndex: { partitionKey: "id" },
       });
 
-      const site = new RemixSite(stack, "site", {
-        bind: [table],
-      });
-      stack.addOutputs({
-        url: site.url,
-      });
-
       const api = new Api(stack, "api");
-
       const auth = new Auth(stack, "auth", {
         authenticator: {
           handler: "functions/auth.handler",
         },
       });
-
       auth.attach(stack, { api });
+
+      const site = new RemixSite(stack, "site", {
+        bind: [table],
+        environment: {
+          API_URL: api.url,
+        },
+      });
+
+      stack.addOutputs({
+        siteUrl: site.url,
+        apiUrl: api.url,
+      });
     });
   },
 } satisfies SSTConfig;
