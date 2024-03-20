@@ -17,10 +17,17 @@ export default {
         primaryIndex: { partitionKey: "id" },
       });
 
-      const api = new Api(stack, "api");
+      const api = new Api(stack, "api", {
+        cors: {
+          allowCredentials: true,
+          allowHeaders: ["content-type"],
+          allowMethods: ["ANY"],
+          allowOrigins: ["http://localhost:3000", "https://step.maxrchung.com"],
+        },
+      });
       const auth = new Auth(stack, "auth", {
         authenticator: {
-          handler: "functions/auth.handler",
+          handler: "functions/auth.signin",
         },
       });
       auth.attach(stack, { api });
