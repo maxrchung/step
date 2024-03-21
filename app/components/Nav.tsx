@@ -1,14 +1,24 @@
-import { Avatar, Button, Flex, IconButton } from "@chakra-ui/react";
-import { Link } from "@remix-run/react";
-import GitHubIcon from "./GitHubIcon";
-import GoogleIcon from "./GoogleIcon";
+import {
+  Avatar,
+  Button,
+  Flex,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from "@chakra-ui/react";
+import { Link, useNavigate } from "@remix-run/react";
 import type { SessionTypes } from "sst/node/auth";
 
 interface NavProps {
   user: SessionTypes["user"];
+  apiUrl: string;
 }
 
-export default function Nav({ user }: NavProps) {
+export default function Nav({ user, apiUrl }: NavProps) {
+  const navigate = useNavigate();
+
   return (
     <Flex
       bg="gray.100"
@@ -21,23 +31,37 @@ export default function Nav({ user }: NavProps) {
         Step
       </Button>
       <Flex>
-        <IconButton
-          as={Link}
-          to="https://github.com/maxrchung/step"
-          target="_blank"
-          aria-label="GitHub"
-          icon={<GitHubIcon />}
-        />
-        <IconButton
-          aria-label="Profile"
-          icon={
-            <Avatar
-              name={user.given_name || user.name}
-              src={user.picture}
-              size="xs"
-            />
-          }
-        />
+        <Menu>
+          <MenuButton
+            as={IconButton}
+            aria-label="Account"
+            icon={
+              <Avatar
+                name={user.given_name || user.name}
+                src={user.picture}
+                size="xs"
+              />
+            }
+          />
+          <MenuList>
+            {user.sub ? (
+              <MenuItem
+                onClick={async () => {
+                  await fetch(`${apiUrl}/signout`, { credentials: "include" });
+
+                  // Force rerender so user data is refetched
+                  navigate(".", { replace: true });
+                }}
+              >
+                Sign out
+              </MenuItem>
+            ) : (
+              <MenuItem as={Link} to="/signin">
+                Sign in
+              </MenuItem>
+            )}
+          </MenuList>
+        </Menu>
       </Flex>
     </Flex>
   );

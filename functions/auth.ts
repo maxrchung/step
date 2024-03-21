@@ -6,7 +6,7 @@ import { AuthHandler, GoogleAdapter, Session, useSession } from "sst/node/auth";
 declare module "sst/node/auth" {
   export interface SessionTypes {
     user: {
-      sub: string;
+      sub?: string;
       name?: string;
       picture?: string;
       given_name?: string;
@@ -65,8 +65,12 @@ export const user = ApiHandler(async () => {
 export const signout = ApiHandler(async () => {
   return {
     statusCode: 200,
+    cookies: [
+      "auth-token=asdf; HttpOnly; SameSite=None; Secure; Path=/; Expires=Thu Mar 20 2024 03:27:30 GMT-0700 (Pacific Daylight Time); Domain=qz2lf7t1yc.execute-api.us-west-1.amazonaws.com",
+    ],
     headers: {
-      "Set-Cookie": "auth-token=; Max-Age=0",
+      "Set-Cookie":
+        "auth-token=deleted; HttpOnly; SameSite=None; Secure; Path=/; Expires=Thu Mar 20 2024 03:27:30 GMT-0700 (Pacific Daylight Time); Domain=qz2lf7t1yc.execute-api.us-west-1.amazonaws.com",
     },
   };
 });

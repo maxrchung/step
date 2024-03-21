@@ -10,7 +10,6 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import Nav from "./components/Nav";
-import type { PropsWithChildren } from "react";
 import { useEffect, useState } from "react";
 import type { SessionTypes } from "sst/node/auth";
 
@@ -81,7 +80,7 @@ const Auth = () => {
 
   return (
     <>
-      <Nav user={user} />
+      <Nav user={user} apiUrl={data.API_URL} />
       <Outlet />
     </>
   );
