@@ -29,7 +29,7 @@ export const signin = AuthHandler({
 
         const { sub, name, given_name, picture } = tokenset.claims();
 
-        return Session.cookie({
+        return Session.parameter({
           redirect,
           type: "user",
           properties: {
@@ -47,8 +47,6 @@ export const signin = AuthHandler({
 export const user = ApiHandler(async () => {
   const session = useSession();
 
-  console.log(session);
-
   if (session.type === "user") {
     return {
       statusCode: 200,
@@ -59,18 +57,5 @@ export const user = ApiHandler(async () => {
   return {
     statusCode: 200,
     body: "{}",
-  };
-});
-
-export const signout = ApiHandler(async () => {
-  return {
-    statusCode: 200,
-    cookies: [
-      "auth-token=asdf; HttpOnly; SameSite=None; Secure; Path=/; Expires=Thu Mar 20 2024 03:27:30 GMT-0700 (Pacific Daylight Time); Domain=qz2lf7t1yc.execute-api.us-west-1.amazonaws.com",
-    ],
-    headers: {
-      "Set-Cookie":
-        "auth-token=deleted; HttpOnly; SameSite=None; Secure; Path=/; Expires=Thu Mar 20 2024 03:27:30 GMT-0700 (Pacific Daylight Time); Domain=qz2lf7t1yc.execute-api.us-west-1.amazonaws.com",
-    },
   };
 });

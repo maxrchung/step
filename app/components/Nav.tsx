@@ -8,7 +8,7 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { Link, useNavigate } from "@remix-run/react";
+import { Link } from "@remix-run/react";
 import type { SessionTypes } from "sst/node/auth";
 
 interface NavProps {
@@ -17,7 +17,7 @@ interface NavProps {
 }
 
 export default function Nav({ user, apiUrl }: NavProps) {
-  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   return (
     <Flex
@@ -44,13 +44,13 @@ export default function Nav({ user, apiUrl }: NavProps) {
             }
           />
           <MenuList>
-            {user.sub ? (
+            {token ? (
               <MenuItem
                 onClick={async () => {
-                  await fetch(`${apiUrl}/signout`, { credentials: "include" });
+                  localStorage.removeItem("token");
 
                   // Force rerender so user data is refetched
-                  navigate(".", { replace: true });
+                  window.location.reload();
                 }}
               >
                 Sign out

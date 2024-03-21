@@ -8,6 +8,8 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useNavigate,
+  useSearchParams,
 } from "@remix-run/react";
 import Nav from "./components/Nav";
 import { useEffect, useState } from "react";
@@ -26,7 +28,7 @@ export async function loader() {
 
 function Document({
   children,
-  title = "App title",
+  title = "Step",
 }: {
   children: React.ReactNode;
   title?: string;
@@ -61,14 +63,39 @@ export default function Wrapper() {
 const Auth = () => {
   const data = useLoaderData<typeof loader>();
   const [user, setUser] = useState<SessionTypes["user"]>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = searchParams.get("token");
+    if (token) {
+      localStorage.setItem("token", token);
+      setSearchParams((prev) => {
+        prev.delete("token");
+        return prev;
+      });
+
+      // Retrigger user fetch
+      window.location.replace(window.location.origin);
+    }
+  }, [navigate, searchParams, setSearchParams]);
 
   useEffect(() => {
     const getUser = async () => {
-      const response = await fetch(`${data.API_URL}/user`, {
-        credentials: "include",
-      });
-      const json = await response.json();
-      setUser(json);
+      console.log("user");
+
+      const token = localStorage.getItem("token");
+      if (token) {
+        const response = await fetch(`${data.API_URL}/user`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const json = await response.json();
+        setUser(json);
+      } else {
+        setUser({});
+      }
     };
 
     getUser();

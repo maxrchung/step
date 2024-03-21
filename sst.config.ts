@@ -18,15 +18,8 @@ export default {
       });
 
       const api = new Api(stack, "api", {
-        cors: {
-          allowCredentials: true,
-          allowHeaders: ["content-type"],
-          allowMethods: ["ANY"],
-          allowOrigins: ["http://localhost:3000", "https://step.maxrchung.com"],
-        },
         routes: {
           "GET /user": "functions/auth.user",
-          "GET /signout": "functions/auth.signout",
         },
       });
       const auth = new Auth(stack, "auth", {
