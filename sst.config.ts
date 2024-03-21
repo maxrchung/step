@@ -24,6 +24,10 @@ export default {
           allowMethods: ["ANY"],
           allowOrigins: ["http://localhost:3000", "https://step.maxrchung.com"],
         },
+        routes: {
+          "GET /user": "functions/auth.user",
+          "GET /signout": "functions/auth.signout",
+        },
       });
       const auth = new Auth(stack, "auth", {
         authenticator: {
@@ -33,7 +37,7 @@ export default {
       auth.attach(stack, { api });
 
       const site = new RemixSite(stack, "site", {
-        bind: [table],
+        bind: [table, api],
         environment: {
           API_URL: api.url,
         },

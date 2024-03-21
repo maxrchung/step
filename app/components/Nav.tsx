@@ -2,8 +2,13 @@ import { Avatar, Button, Flex, IconButton } from "@chakra-ui/react";
 import { Link } from "@remix-run/react";
 import GitHubIcon from "./GitHubIcon";
 import GoogleIcon from "./GoogleIcon";
+import type { SessionTypes } from "sst/node/auth";
 
-export default function Nav() {
+interface NavProps {
+  user: SessionTypes["user"];
+}
+
+export default function Nav({ user }: NavProps) {
   return (
     <Flex
       bg="gray.100"
@@ -23,8 +28,16 @@ export default function Nav() {
           aria-label="GitHub"
           icon={<GitHubIcon />}
         />
-        <IconButton aria-label="Google sign in" icon={<GoogleIcon />} />
-        <IconButton aria-label="Profile" icon={<Avatar size="xs" />} />
+        <IconButton
+          aria-label="Profile"
+          icon={
+            <Avatar
+              name={user.given_name || user.name}
+              src={user.picture}
+              size="xs"
+            />
+          }
+        />
       </Flex>
     </Flex>
   );

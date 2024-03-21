@@ -29,7 +29,7 @@ export const signin = AuthHandler({
 
         const { sub, name, given_name, picture } = tokenset.claims();
 
-        return Session.parameter({
+        return Session.cookie({
           redirect,
           type: "user",
           properties: {
@@ -47,15 +47,18 @@ export const signin = AuthHandler({
 export const user = ApiHandler(async () => {
   const session = useSession();
 
+  console.log(session);
+
   if (session.type === "user") {
     return {
       statusCode: 200,
-      body: session.properties,
+      body: JSON.stringify(session.properties),
     };
   }
 
   return {
     statusCode: 200,
+    body: "{}",
   };
 });
 

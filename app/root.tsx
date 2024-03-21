@@ -1,5 +1,5 @@
 import { ChakraProvider } from "@chakra-ui/react";
-import { type MetaFunction } from "@remix-run/node";
+import { json, type MetaFunction } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -7,13 +7,23 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
 import Nav from "./components/Nav";
+import type { PropsWithChildren } from "react";
+import { useEffect, useState } from "react";
+import type { SessionTypes } from "sst/node/auth";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
   viewport: "width=device-width,initial-scale=1",
 });
+
+export async function loader() {
+  return json({
+    API_URL: process.env.API_URL ?? "",
+  });
+}
 
 function Document({
   children,
@@ -39,47 +49,40 @@ function Document({
   );
 }
 
-export default function App() {
-  // throw new Error("💣💥 Booooom");
-
+export default function Wrapper() {
   return (
     <Document>
       <ChakraProvider>
-        <Nav />
-        <Outlet />
+        <Auth />
       </ChakraProvider>
     </Document>
   );
 }
 
-// // How ChakraProvider should be used on CatchBoundary
-// export function CatchBoundary() {
-//   const caught = useCatch();
+const Auth = () => {
+  const data = useLoaderData<typeof loader>();
+  const [user, setUser] = useState<SessionTypes["user"]>();
 
-//   return (
-//     <Document title={`${caught.status} ${caught.statusText}`}>
-//       <ChakraProvider>
-//         <Box>
-//           <Heading as="h1" bg="purple.600">
-//             [CatchBoundary]: {caught.status} {caught.statusText}
-//           </Heading>
-//         </Box>
-//       </ChakraProvider>
-//     </Document>
-//   );
-// }
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await fetch(`${data.API_URL}/user`, {
+        credentials: "include",
+      });
+      const json = await response.json();
+      setUser(json);
+    };
 
-// // How ChakraProvider should be used on ErrorBoundary
-// export function ErrorBoundary({ error }: { error: Error }) {
-//   return (
-//     <Document title="Error!">
-//       <ChakraProvider>
-//         <Box>
-//           <Heading as="h1" bg="blue.500">
-//             [ErrorBoundary]: There was an error: {error.message}
-//           </Heading>
-//         </Box>
-//       </ChakraProvider>
-//     </Document>
-//   );
-// }
+    getUser();
+  }, [data.API_URL]);
+
+  if (!user) {
+    return;
+  }
+
+  return (
+    <>
+      <Nav user={user} />
+      <Outlet />
+    </>
+  );
+};
