@@ -1,4 +1,4 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, Flex, Spacer } from "@chakra-ui/react";
 import { json, type MetaFunction } from "@remix-run/node";
 import {
   Links,
@@ -82,8 +82,6 @@ const Auth = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      console.log("user");
-
       const token = localStorage.getItem("token");
       if (token) {
         const response = await fetch(`${data.API_URL}/user`, {
@@ -106,9 +104,10 @@ const Auth = () => {
   }
 
   return (
-    <>
+    <Flex gap="5" flexDir="column">
       <Nav user={user} apiUrl={data.API_URL} />
+
       <Outlet />
-    </>
+    </Flex>
   );
 };
