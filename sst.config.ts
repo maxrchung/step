@@ -1,5 +1,5 @@
 import type { SSTConfig } from "sst";
-import { Api, Auth, RemixSite, Table } from "sst/constructs";
+import { Config, RemixSite, Table } from "sst/constructs";
 
 export default {
   config(_input) {
@@ -17,28 +17,19 @@ export default {
         primaryIndex: { partitionKey: "id" },
       });
 
-      const api = new Api(stack, "api", {
-        routes: {
-          "GET /user": "functions/auth.user",
-        },
-      });
-      const auth = new Auth(stack, "auth", {
-        authenticator: {
-          handler: "functions/auth.signin",
-        },
-      });
-      auth.attach(stack, { api });
+      const GOOGLE_CLIENT_ID = new Config.Secret(stack, "GOOGLE_CLIENT_ID");
+      const GOOGLE_CLIENT_SECRET = new Config.Secret(
+        stack,
+        "GOOGLE_CLIENT_SECRET"
+      );
+      const COOKIE_SECRET = new Config.Secret(stack, "COOKIE_SECRET");
 
       const site = new RemixSite(stack, "site", {
-        bind: [table, api],
-        environment: {
-          API_URL: api.url,
-        },
+        bind: [table, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, COOKIE_SECRET],
       });
 
       stack.addOutputs({
         siteUrl: site.url,
-        apiUrl: api.url,
       });
     });
   },
