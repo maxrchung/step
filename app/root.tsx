@@ -1,5 +1,5 @@
-import { ChakraProvider, Flex, Spacer } from "@chakra-ui/react";
-import { json, type MetaFunction } from "@remix-run/node";
+import { ChakraProvider, Flex } from "@chakra-ui/react";
+import { json } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -12,10 +12,11 @@ import {
   useSearchParams,
 } from "@remix-run/react";
 import Nav from "./components/Nav";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import type { SessionTypes } from "sst/node/auth";
 import type { LinksFunction } from "@remix-run/node";
-import { cssBundleHref } from "@remix-run/css-bundle";
+import { withEmotionCache } from "@emotion/react";
+import { ClientStyleContext, ServerStyleContext } from "./emotion/context";
 
 export async function loader() {
   return json({
@@ -24,8 +25,6 @@ export async function loader() {
 }
 
 export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
-
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   { rel: "preconnect", href: "https://fonts.gstatic.com" },
   {
@@ -60,7 +59,7 @@ const Document = withEmotionCache(
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <Meta />
           <Links />
-          <title></title>
+          <title>Step</title>
           {serverStyleData?.map(({ key, ids, css }) => (
             <style
               key={key}
@@ -90,7 +89,7 @@ export default function Wrapper() {
 
 const Auth = () => {
   const data = useLoaderData<typeof loader>();
-  const [user, setUser] = useState<SessionTypes["user"]>();
+  const [user, setUser] = useState<SessionTypes["user"]>({});
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -107,29 +106,6 @@ const Auth = () => {
       window.location.replace(window.location.origin);
     }
   }, [navigate, searchParams, setSearchParams]);
-
-  useEffect(() => {
-    const getUser = async () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const response = await fetch(`${data.API_URL}/user`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const json = await response.json();
-        setUser(json);
-      } else {
-        setUser({});
-      }
-    };
-
-    getUser();
-  }, [data.API_URL]);
-
-  if (!user) {
-    return;
-  }
 
   return (
     <Flex gap="5" flexDir="column">
