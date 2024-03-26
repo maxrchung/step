@@ -8,18 +8,17 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { Link } from "@remix-run/react";
-import type { SessionTypes } from "sst/node/auth";
-import GitHubIcon from "./GitHubIcon";
-import { ArrowUpIcon, PlusSquareIcon } from "@chakra-ui/icons";
+import { User } from "~/auth/authenticator.server";
+import HomeIcon from "~/icons/HomeIcon";
+import GitHubIcon from "~/icons/GitHubIcon";
+import PlusIcon from "~/icons/PlusIcon";
 
 interface NavProps {
-  user: SessionTypes["user"];
+  user?: User;
   apiUrl: string;
 }
 
-export default function Nav({ user, apiUrl }: NavProps) {
-  const token = localStorage.getItem("token");
-
+export default function Nav({ user }: NavProps) {
   return (
     <Flex bg="gray.100" height={14} px={2} align="center" justify="center">
       <IconButton
@@ -27,13 +26,9 @@ export default function Nav({ user, apiUrl }: NavProps) {
         to="/"
         aria-label="Home"
         title="Home"
-        icon={<ArrowUpIcon />}
+        icon={<HomeIcon />}
       />
-      <IconButton
-        aria-label="Create"
-        title="Create"
-        icon={<PlusSquareIcon />}
-      />
+      <IconButton aria-label="Create" title="Create" icon={<PlusIcon />} />
       <IconButton
         as={Link}
         to="https://github.com/maxrchung/step"
@@ -47,20 +42,12 @@ export default function Nav({ user, apiUrl }: NavProps) {
           as={IconButton}
           aria-label="Account"
           title="Account"
-          icon={
-            <Avatar
-              name={user.given_name || user.name}
-              src={user.picture}
-              size="xs"
-            />
-          }
+          icon={<Avatar name={user?.name} src={user?.photo} size="xs" />}
         />
         <MenuList>
-          {token ? (
+          {true ? (
             <MenuItem
               onClick={async () => {
-                localStorage.removeItem("token");
-
                 // Force rerender so user data is refetched
                 window.location.reload();
               }}

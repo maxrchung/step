@@ -89,27 +89,10 @@ export default function Wrapper() {
 
 const Auth = () => {
   const data = useLoaderData<typeof loader>();
-  const [user, setUser] = useState<SessionTypes["user"]>({});
-  const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = searchParams.get("token");
-    if (token) {
-      localStorage.setItem("token", token);
-      setSearchParams((prev) => {
-        prev.delete("token");
-        return prev;
-      });
-
-      // Retrigger user fetch
-      window.location.replace(window.location.origin);
-    }
-  }, [navigate, searchParams, setSearchParams]);
 
   return (
     <Flex gap="5" flexDir="column">
-      <Nav user={user} apiUrl={data.API_URL} />
+      <Nav apiUrl={data.API_URL} />
 
       <Outlet />
     </Flex>

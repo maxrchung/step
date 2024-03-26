@@ -1,9 +1,9 @@
 import { Authenticator } from "remix-auth";
-import { sessionStorage } from "~/services/session.server";
+import { sessionStorage } from "~/auth/session.server";
 import { GoogleStrategy } from "remix-auth-google";
 import { Config } from "sst/node/config";
 
-interface User {
+export interface User {
   id: string;
   name: string;
   photo?: string;
@@ -11,16 +11,18 @@ interface User {
 
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
-export let authenticator = new Authenticator<User>(sessionStorage);
+export const authenticator = new Authenticator<User>(sessionStorage);
+
+export const CALLBACK_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://step.maxrchung.com"
+    : "http://localhost:3000";
 
 const googleStrategy = new GoogleStrategy(
   {
     clientID: Config.GOOGLE_CLIENT_ID,
     clientSecret: Config.GOOGLE_CLIENT_SECRET,
-    callbackURL:
-      process.env.NODE_ENV === "production"
-        ? "https://step.maxrchung.com"
-        : "http://localhost:3000",
+    callbackURL: CALLBACK_URL,
   },
   async ({ profile }) => {
     const { id, displayName, photos } = profile;
