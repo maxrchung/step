@@ -16,22 +16,24 @@ export const authenticator = new Authenticator<User>(sessionStorage);
 export const CALLBACK_URL =
   process.env.NODE_ENV === "production"
     ? "https://step.maxrchung.com"
-    : "http://localhost:3000";
+    : "http://localhost:3000/signin/callback";
 
-const googleStrategy = new GoogleStrategy(
-  {
-    clientID: Config.GOOGLE_CLIENT_ID,
-    clientSecret: Config.GOOGLE_CLIENT_SECRET,
-    callbackURL: CALLBACK_URL,
-  },
-  async ({ profile }) => {
-    const { id, displayName, photos } = profile;
-    return {
-      id,
-      name: displayName,
-      photo: photos?.[0].value,
-    };
-  }
+authenticator.use(
+  new GoogleStrategy(
+    {
+      clientID: Config.GOOGLE_CLIENT_ID,
+      clientSecret: Config.GOOGLE_CLIENT_SECRET,
+      callbackURL: CALLBACK_URL,
+    },
+    async ({ profile }) => {
+      const { id, displayName, photos } = profile;
+      console.log("profile", profile);
+
+      return {
+        id,
+        name: displayName,
+        photo: photos?.[0].value,
+      };
+    }
+  )
 );
-
-authenticator.use(googleStrategy);

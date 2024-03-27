@@ -8,20 +8,18 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useNavigate,
-  useSearchParams,
 } from "@remix-run/react";
 import Nav from "./components/Nav";
-import { useContext, useEffect, useState } from "react";
-import type { SessionTypes } from "sst/node/auth";
-import type { LinksFunction } from "@remix-run/node";
+import { useContext, useEffect } from "react";
+import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { withEmotionCache } from "@emotion/react";
 import { ClientStyleContext, ServerStyleContext } from "./emotion/context";
+import { authenticator } from "./auth/authenticator.server";
 
-export async function loader() {
-  return json({
-    API_URL: process.env.API_URL ?? "",
-  });
+export async function loader({ request }: LoaderFunctionArgs) {
+  const user = await authenticator.isAuthenticated(request);
+  console.log("user", user);
+  return json({ user: user ?? undefined });
 }
 
 export const links: LinksFunction = () => [
@@ -88,11 +86,11 @@ export default function Wrapper() {
 }
 
 const Auth = () => {
-  const data = useLoaderData<typeof loader>();
+  const { user } = useLoaderData<typeof loader>();
 
   return (
     <Flex gap="5" flexDir="column">
-      <Nav apiUrl={data.API_URL} />
+      <Nav user={user} />
 
       <Outlet />
     </Flex>

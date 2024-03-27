@@ -1,23 +1,18 @@
 import { Card, Container, Flex, Heading, Text } from "@chakra-ui/react";
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import {
+  LoaderFunction,
+  redirect,
+  type LoaderFunctionArgs,
+} from "@remix-run/node";
+import { Form } from "@remix-run/react";
 import GoogleSignInButton from "~/components/GoogleSignInButton";
 import { authenticator } from "~/auth/authenticator.server";
 
-export async function loader() {
-  return json({
-    API_URL: process.env.API_URL ?? "",
-  });
-}
-
 export async function action({ request }: LoaderFunctionArgs) {
-  console.log("action");
   return await authenticator.authenticate("google", request);
 }
 
-export default function Login() {
-  const data = useLoaderData<typeof loader>();
-
+export default function SignIn() {
   return (
     <Container>
       <Card>

@@ -15,7 +15,6 @@ import PlusIcon from "~/icons/PlusIcon";
 
 interface NavProps {
   user?: User;
-  apiUrl: string;
 }
 
 export default function Nav({ user }: NavProps) {
@@ -45,7 +44,7 @@ export default function Nav({ user }: NavProps) {
           icon={<Avatar name={user?.name} src={user?.photo} size="xs" />}
         />
         <MenuList>
-          {true ? (
+          {user ? (
             <MenuItem
               onClick={async () => {
                 // Force rerender so user data is refetched
