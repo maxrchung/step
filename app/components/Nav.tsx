@@ -7,7 +7,7 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { Link } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 import { User } from "~/auth/authenticator.server";
 import HomeIcon from "~/icons/HomeIcon";
 import GitHubIcon from "~/icons/GitHubIcon";
@@ -45,14 +45,9 @@ export default function Nav({ user }: NavProps) {
         />
         <MenuList>
           {user ? (
-            <MenuItem
-              onClick={async () => {
-                // Force rerender so user data is refetched
-                window.location.reload();
-              }}
-            >
-              Sign out
-            </MenuItem>
+            <Form action="signout" method="POST">
+              <MenuItem type="submit">Sign out</MenuItem>
+            </Form>
           ) : (
             <MenuItem as={Link} to="/signin">
               Sign in
