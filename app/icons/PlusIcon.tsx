@@ -6,9 +6,9 @@ export default function PlusIcon() {
       <path
         fill="none"
         stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="32"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="32"
         d="M256 112v288M400 256H112"
       />
     </Icon>

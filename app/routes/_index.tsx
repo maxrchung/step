@@ -4,8 +4,9 @@ import {
   ArrowForwardIcon,
   ArrowBackIcon,
 } from "@chakra-ui/icons";
-import { Flex, chakra, useBoolean } from "@chakra-ui/react";
+import { Button, Flex, chakra, useBoolean } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import PlusIcon from "~/icons/PlusIcon";
 
 const MAX_NOTES = 140;
 const DEBOUNCE_TIME = 1000;
@@ -26,12 +27,22 @@ export default function Index() {
   }, [data]);
 
   return (
-    <Flex p={8} justify="center">
-      <Column data={data} setData={setData} index={0} />
-      <Column data={data} setData={setData} index={1} />
-      <Column data={data} setData={setData} index={2} />
-      <Column data={data} setData={setData} index={3} />
-    </Flex>
+    // <Flex p={8} justify="center">
+    //   <Column data={data} setData={setData} index={0} />
+    //   <Column data={data} setData={setData} index={1} />
+    //   <Column data={data} setData={setData} index={2} />
+    //   <Column data={data} setData={setData} index={3} />
+    // </Flex>
+    <Button
+      display="flex"
+      gap="2"
+      alignItems="center"
+      alignSelf="center"
+      type="submit"
+    >
+      <PlusIcon />
+      Create a new Step
+    </Button>
   );
 }
 

@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Flex,
   IconButton,
   Menu,
@@ -12,6 +11,7 @@ import { User } from "~/auth/authenticator.server";
 import HomeIcon from "~/icons/HomeIcon";
 import GitHubIcon from "~/icons/GitHubIcon";
 import PlusIcon from "~/icons/PlusIcon";
+import UserIcon from "~/icons/UserIcon";
 
 interface NavProps {
   user?: User;
@@ -41,7 +41,7 @@ export default function Nav({ user }: NavProps) {
           as={IconButton}
           aria-label="Account"
           title="Account"
-          icon={<Avatar name={user?.name} src={user?.photo} size="xs" />}
+          icon={<UserIcon />}
         />
         <MenuList>
           {user ? (
