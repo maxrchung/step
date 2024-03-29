@@ -1,15 +1,25 @@
 import { Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
-import { ActionFunction } from "@remix-run/node";
+import { ActionFunction, json, redirect } from "@remix-run/node";
 import { Form } from "@remix-run/react";
-import { authenticator } from "~/auth/authenticator.server";
+import { commitSession, getSession } from "~/auth/session.server";
 import PlusIcon from "~/icons/PlusIcon";
 
 export const action: ActionFunction = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: "/signin",
+  // const user = await authenticator.isAuthenticated(request, {
+  //   failureRedirect: "/signin",
+  // });
+
+  const session = await getSession();
+  session.flash("message", {
+    text: "Sign-in is required to create a Step.",
+    status: "error",
   });
-  console.log("user", user);
-  return null;
+
+  return redirect("/signin", {
+    headers: {
+      "Set-Cookie": await commitSession(session),
+    },
+  });
 };
 
 export default function Index() {
@@ -19,8 +29,7 @@ export default function Index() {
         <Heading size="lg">Step</Heading>
         <Text>
           Step is a small tool to create step patterns for dance games. I made
-          this mostly with the intention to help me keep notes for practicing
-          certain parts of songs.
+          this mostly with the intention to help me keep notes for practicing.
         </Text>
         <Form method="post">
           <Button

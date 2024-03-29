@@ -12,7 +12,7 @@ export default function SignIn() {
   return (
     <Container>
       <Flex flexDir="column" gap="5" align="center">
-        <Heading size="lg">Sign in</Heading>
+        <Heading size="lg">Sign-in</Heading>
         <Text>Sign in to edit your own Steps.</Text>
         <Form method="post">
           <GoogleSignInButton />

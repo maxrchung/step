@@ -1,4 +1,4 @@
-import { ChakraProvider, Flex } from "@chakra-ui/react";
+import { ChakraProvider, Flex, useToast } from "@chakra-ui/react";
 import { json } from "@remix-run/node";
 import {
   Links,
@@ -8,6 +8,7 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useSearchParams,
 } from "@remix-run/react";
 import Nav from "./components/Nav";
 import { useContext, useEffect } from "react";
@@ -15,10 +16,17 @@ import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { withEmotionCache } from "@emotion/react";
 import { ClientStyleContext, ServerStyleContext } from "./emotion/context";
 import { authenticator } from "./auth/authenticator.server";
+import { commitSession, getSession } from "./auth/session.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await authenticator.isAuthenticated(request);
-  return json({ user: user ?? undefined });
+  const session = await getSession(request.headers.get("Cookie"));
+  const message = session.get("message") || undefined;
+  const user = (await authenticator.isAuthenticated(request)) || undefined;
+
+  return json(
+    { user, message },
+    { headers: { "Set-Cookie": await commitSession(session) } }
+  );
 }
 
 export const links: LinksFunction = () => [
@@ -76,11 +84,12 @@ const Document = withEmotionCache(
   }
 );
 
-export default function Wrapper() {
+export default function App() {
   const { user } = useLoaderData<typeof loader>();
 
   return (
     <Document>
+      <Toaster />
       <Flex gap="5" flexDir="column">
         <Nav user={user} />
 
@@ -88,4 +97,21 @@ export default function Wrapper() {
       </Flex>
     </Document>
   );
+}
+
+function Toaster() {
+  const { message } = useLoaderData<typeof loader>();
+  const toast = useToast();
+
+  useEffect(() => {
+    if (message) {
+      const { text, status } = message;
+      toast({
+        description: text,
+        status,
+      });
+    }
+  }, [message]);
+
+  return null;
 }

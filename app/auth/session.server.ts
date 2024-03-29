@@ -1,9 +1,20 @@
 // app/services/session.server.ts
-import { createCookieSessionStorage } from "@remix-run/node";
+import { AlertStatus } from "@chakra-ui/react";
+import { SessionData, createCookieSessionStorage } from "@remix-run/node";
 import { Config } from "sst/node/config";
 
+interface FlashData {
+  message: {
+    text: string;
+    status: AlertStatus;
+  };
+}
+
 // export the whole sessionStorage object
-export const sessionStorage = createCookieSessionStorage({
+export const sessionStorage = createCookieSessionStorage<
+  SessionData,
+  FlashData
+>({
   cookie: {
     name: "_session", // use any name you want here
     sameSite: "lax", // this helps with CSRF
