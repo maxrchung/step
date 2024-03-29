@@ -18,9 +18,9 @@ export default function Index() {
       <Flex flexDir="column" gap="5" align="center">
         <Heading size="lg">Step</Heading>
         <Text>
-          Step is a small tool to create/share step patterns for dance games. I
-          made this mostly with the intention to help me practice certain parts
-          of songs I have difficulty with.
+          Step is a small tool to create step patterns for dance games. I made
+          this mostly with the intention to help me keep notes for practicing
+          certain parts of songs.
         </Text>
         <Form method="post">
           <Button

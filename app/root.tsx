@@ -77,21 +77,15 @@ const Document = withEmotionCache(
 );
 
 export default function Wrapper() {
-  return (
-    <Document>
-      <Auth />
-    </Document>
-  );
-}
-
-const Auth = () => {
   const { user } = useLoaderData<typeof loader>();
 
   return (
-    <Flex gap="5" flexDir="column">
-      <Nav user={user} />
+    <Document>
+      <Flex gap="5" flexDir="column">
+        <Nav user={user} />
 
-      <Outlet />
-    </Flex>
+        <Outlet />
+      </Flex>
+    </Document>
   );
-};
+}
