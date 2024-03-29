@@ -39,13 +39,13 @@ export default function Nav({ user }: NavProps) {
       <Menu>
         <MenuButton
           as={IconButton}
-          aria-label="Account"
-          title="Account"
+          aria-label="User"
+          title="User"
           icon={<UserIcon />}
         />
         <MenuList>
           {user ? (
-            <Form action="signout" method="POST">
+            <Form action="/signout" method="POST">
               <MenuItem type="submit">Sign out</MenuItem>
             </Form>
           ) : (

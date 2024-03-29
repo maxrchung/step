@@ -12,8 +12,8 @@ export default function SignIn() {
   return (
     <Container>
       <Flex flexDir="column" gap="5" align="center">
-        <Heading>Sign in</Heading>
-        <Text>Sign in to edit your own charts.</Text>
+        <Heading size="lg">Sign in</Heading>
+        <Text>Sign in to edit your own Steps.</Text>
         <Form method="post">
           <GoogleSignInButton />
         </Form>

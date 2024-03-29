@@ -18,7 +18,6 @@ import { authenticator } from "./auth/authenticator.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await authenticator.isAuthenticated(request);
-  console.log("user", user);
   return json({ user: user ?? undefined });
 }
 
