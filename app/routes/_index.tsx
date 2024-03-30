@@ -1,25 +1,28 @@
 import { Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
 import { ActionFunction, json, redirect } from "@remix-run/node";
 import { Form } from "@remix-run/react";
+import { authenticator } from "~/auth/authenticator.server";
 import { commitSession, getSession } from "~/auth/session.server";
 import PlusIcon from "~/icons/PlusIcon";
 
 export const action: ActionFunction = async ({ request }) => {
-  // const user = await authenticator.isAuthenticated(request, {
-  //   failureRedirect: "/signin",
-  // });
+  const user = await authenticator.isAuthenticated(request);
 
-  const session = await getSession();
-  session.flash("message", {
-    text: "Sign-in is required to create a Step.",
-    status: "error",
-  });
+  if (!user) {
+    const session = await getSession();
+    session.flash("message", {
+      text: "Sign-in is required to create a Step.",
+      status: "error",
+    });
 
-  return redirect("/signin", {
-    headers: {
-      "Set-Cookie": await commitSession(session),
-    },
-  });
+    return redirect("/signin", {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    });
+  }
+
+  return redirect("/123");
 };
 
 export default function Index() {
