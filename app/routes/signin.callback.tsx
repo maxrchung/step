@@ -9,7 +9,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   if (user) {
     session.set(authenticator.sessionKey, user);
     session.flash("message", {
-      text: "You've successfully signed in.",
+      text: "You've signed in with Google.",
       status: "success",
     });
 

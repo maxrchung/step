@@ -27,7 +27,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "remix-auth": "^3.6.0",
-    "remix-auth-google": "^2.0.0"
+    "remix-auth-google": "^2.0.0",
+    "uid": "^2.0.2"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.6.0",

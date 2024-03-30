@@ -1,8 +1,10 @@
 import { Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
 import { ActionFunction, json, redirect } from "@remix-run/node";
 import { Form } from "@remix-run/react";
+import { uid } from "uid";
 import { authenticator } from "~/auth/authenticator.server";
 import { commitSession, getSession } from "~/auth/session.server";
+import { createStep, getStep } from "~/db";
 import PlusIcon from "~/icons/PlusIcon";
 
 export const action: ActionFunction = async ({ request }) => {
@@ -22,7 +24,23 @@ export const action: ActionFunction = async ({ request }) => {
     });
   }
 
-  return redirect("/123");
+  let id = uid();
+  while ((await getStep(id)).Item) {
+    id = uid();
+  }
+  await createStep(id, user.id);
+
+  const session = await getSession(request.headers.get("Cookie"));
+  session.flash("message", {
+    text: "You created a new Step.",
+    status: "success",
+  });
+
+  return redirect(`/${id}`, {
+    headers: {
+      "Set-Cookie": await commitSession(session),
+    },
+  });
 };
 
 export default function Index() {
@@ -30,9 +48,8 @@ export default function Index() {
     <Container>
       <Flex flexDir="column" gap="5" align="center">
         <Heading size="lg">Step</Heading>
-        <Text>
-          Step is a small tool to create step patterns for dance games. I made
-          this mostly with the intention to help me keep notes for practicing.
+        <Text align="center">
+          Web tool to create step patterns for dance games (DDR, PIU, SMX)
         </Text>
         <Form method="post">
           <Button

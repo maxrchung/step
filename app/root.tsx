@@ -8,7 +8,6 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useSearchParams,
 } from "@remix-run/react";
 import Nav from "./components/Nav";
 import { useContext, useEffect } from "react";

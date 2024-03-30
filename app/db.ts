@@ -18,11 +18,13 @@ interface Step {
   title: string;
   style: Style;
   steps: number[][];
+  owner: string;
 }
 
-export const createStep = async (id: string) => {
+export const createStep = async (id: string, owner: string) => {
   const item: Step = {
     id,
+    owner,
     title: "My Step",
     style: Style.DDR_SINGLE,
     steps: [],
@@ -35,13 +37,6 @@ export const createStep = async (id: string) => {
 };
 
 export const getStep = async (id: string) => {
-  const item: Step = {
-    id,
-    title: "My Step",
-    style: Style.DDR_SINGLE,
-    steps: [],
-  };
-
   return await db.get({
     TableName: Table.steps.tableName,
     Key: {
