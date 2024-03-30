@@ -27,7 +27,6 @@ authenticator.use(
     },
     async ({ profile }) => {
       const { id, displayName, photos } = profile;
-      console.log("profile", profile);
 
       return {
         id,
