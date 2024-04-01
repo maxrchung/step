@@ -26,6 +26,9 @@ export default function Nav({ user }: NavProps) {
       px={2}
       align="center"
       justify="space-between"
+      pos="sticky"
+      top="0"
+      zIndex="sticky"
     >
       <Flex>
         <IconButton

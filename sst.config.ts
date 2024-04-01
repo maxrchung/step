@@ -9,12 +9,29 @@ export default {
     };
   },
   stacks(app) {
+    // Remove all resources when non-prod stages are removed
+    // https://docs.sst.dev/advanced/removal-policy
+    if (app.stage !== "prod") {
+      app.setDefaultRemovalPolicy("destroy");
+    }
+
     app.stack(function Site({ stack }) {
       const table = new Table(stack, "steps", {
         fields: {
           id: "string",
+          created: "string",
+          owner: "string",
+          title: "string",
         },
         primaryIndex: { partitionKey: "id" },
+        globalIndexes: {
+          ownerIndex: {
+            partitionKey: "owner",
+            sortKey: "created",
+            // Avoid writes to steps in GSI
+            projection: ["id", "owner", "title", "created"],
+          },
+        },
       });
 
       const GOOGLE_CLIENT_ID = new Config.Secret(stack, "GOOGLE_CLIENT_ID");
