@@ -4,7 +4,7 @@ import {
   ArrowForwardIcon,
   ArrowBackIcon,
 } from "@chakra-ui/icons";
-import { Flex, chakra, useBoolean } from "@chakra-ui/react";
+import { Flex, Heading, chakra, useBoolean } from "@chakra-ui/react";
 import { LoaderFunction, LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
@@ -33,11 +33,14 @@ export default function Step() {
   }, [data]);
 
   return (
-    <Flex p={8} justify="center">
-      <Column data={data} setData={setData} index={0} />
-      <Column data={data} setData={setData} index={1} />
-      <Column data={data} setData={setData} index={2} />
-      <Column data={data} setData={setData} index={3} />
+    <Flex flexDir="column" gap="5" align="center">
+      <Heading size="lg">{step?.title}</Heading>
+      <Flex justify="center">
+        <Column data={data} setData={setData} index={0} />
+        <Column data={data} setData={setData} index={1} />
+        <Column data={data} setData={setData} index={2} />
+        <Column data={data} setData={setData} index={3} />
+      </Flex>
     </Flex>
   );
 }
