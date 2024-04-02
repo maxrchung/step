@@ -106,7 +106,8 @@ function Toaster() {
     if (message) {
       const { text, status } = message;
       toast({
-        description: text,
+        // Yolo?
+        description: <div dangerouslySetInnerHTML={{ __html: text }} />,
         status,
       });
     }

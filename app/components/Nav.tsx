@@ -13,6 +13,7 @@ import GitHubIcon from "~/icons/GitHubIcon";
 import PlusIcon from "~/icons/PlusIcon";
 import UserIcon from "~/icons/UserIcon";
 import TwitterIcon from "~/icons/TwitterIcon";
+import Create from "~/routes/create";
 
 interface NavProps {
   user?: User;
@@ -39,7 +40,14 @@ export default function Nav({ user }: NavProps) {
           icon={<HomeIcon />}
         />
 
-        <IconButton aria-label="Create" title="Create" icon={<PlusIcon />} />
+        <Create>
+          <IconButton
+            aria-label="Create"
+            title="Create"
+            icon={<PlusIcon />}
+            type="submit"
+          />
+        </Create>
 
         <Menu>
           <MenuButton
