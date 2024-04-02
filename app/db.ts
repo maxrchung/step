@@ -37,7 +37,7 @@ export const createStep = (id: string, owner: string) => {
     owner,
     title: "My Step",
     style: Style.DDR_SINGLE,
-    steps: [],
+    steps: [[], [], [], []],
     created: iso,
     updated: iso,
   };

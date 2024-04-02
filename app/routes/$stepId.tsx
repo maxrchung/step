@@ -5,28 +5,25 @@ import {
   ArrowBackIcon,
 } from "@chakra-ui/icons";
 import { Flex, chakra, useBoolean } from "@chakra-ui/react";
-import { LoaderFunction } from "@remix-run/node";
+import { LoaderFunction, LoaderFunctionArgs, json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
+import invariant from "tiny-invariant";
+import { getStep } from "~/db";
 
 const MAX_NOTES = 140;
 const DEBOUNCE_TIME = 1000;
 
-export const loader: LoaderFunction = async ({ params }) => {
-  // const contact = await getContact(params.contactId);
-  // return json({ contact });
-  console.log(params.stepId);
-  return null;
+export const loader = async ({ params }: LoaderFunctionArgs) => {
+  invariant(params.stepId, "Missing Step ID");
+
+  const step = await getStep(params.stepId);
+  return json({ step });
 };
 
 export default function Step() {
-  // const { contact } = useLoaderData<typeof loader>();
-
-  const [data, setData] = useState<number[][]>([
-    [0, 3, 5, 20],
-    [2, 4, 8, 20],
-    [1, 2, 3],
-    [4, 5, 6],
-  ]);
+  const { step } = useLoaderData<typeof loader>();
+  const [data, setData] = useState<number[][]>(step?.steps ?? [[], [], [], []]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {

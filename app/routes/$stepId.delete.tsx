@@ -5,7 +5,7 @@ import { getSession, commitSession } from "~/auth/session.server";
 import { deleteStep, getStep } from "~/db";
 
 export const action: ActionFunction = async ({ params, request }) => {
-  invariant(params.stepId, "Step ID is required.");
+  invariant(params.stepId, "Missing Step ID");
 
   const user = await authenticator.isAuthenticated(request);
 
