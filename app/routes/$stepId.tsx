@@ -49,7 +49,7 @@ export default function Step() {
   const [isEdit, setIsEdit] = useState(false);
   const [title, setTitle] = useState(step.title);
   const toast = useToast();
-  const fetcherEditName = useFetcher();
+  const editFetcher = useFetcher();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -59,10 +59,10 @@ export default function Step() {
   }, [data]);
 
   useEffect(() => {
-    if (fetcherEditName.data) {
+    if (editFetcher.data) {
       setIsEdit(false);
     }
-  }, [fetcherEditName.data]);
+  }, [editFetcher.data]);
 
   return (
     <Flex flexDir="column" gap="5" align="center">
@@ -72,9 +72,15 @@ export default function Step() {
             gap="2"
             align="center"
             width="100%"
-            as={fetcherEditName.Form}
+            as={editFetcher.Form}
             action={`/${step.id}/editname`}
             method="patch"
+            onSubmit={(event) => {
+              if (title === step.title) {
+                setIsEdit(false);
+                event.preventDefault();
+              }
+            }}
           >
             <Input
               value={title}
@@ -90,7 +96,7 @@ export default function Step() {
                 icon={<CheckIcon />}
                 variant="ghost"
                 type="submit"
-                isDisabled={fetcherEditName.state === "submitting"}
+                isDisabled={editFetcher.state === "submitting"}
               />
 
               <IconButton
@@ -108,7 +114,7 @@ export default function Step() {
         ) : (
           <Flex gap="2" width="100%" justify="center">
             <Heading size="lg" minWidth="0">
-              {step.title}
+              {title}
             </Heading>
 
             {isOwner && (
