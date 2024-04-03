@@ -6,16 +6,16 @@ import {
   Link as ChakraLink,
   Text,
   IconButton,
-  useToast,
 } from "@chakra-ui/react";
 import { LoaderFunctionArgs, json } from "@remix-run/node";
-import { Form, Link, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { authenticator } from "~/auth/authenticator.server";
 import { getSteps } from "~/db";
 import DeleteIcon from "~/icons/DeleteIcon";
 import EditIcon from "~/icons/EditIcon";
 import PlusIcon from "~/icons/PlusIcon";
 import Create from "./create";
+import Delete from "./$stepId.delete";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request);
@@ -73,18 +73,7 @@ export default function Index() {
                   variant="ghost"
                 />
 
-                <Form
-                  action={`/${id}/delete`}
-                  method="delete"
-                  onSubmit={(event) => {
-                    const response = confirm(
-                      `Are you sure you want to delete ${title}? This cannot be undone.`
-                    );
-                    if (!response) {
-                      event.preventDefault();
-                    }
-                  }}
-                >
+                <Delete id={id} title={title}>
                   <IconButton
                     aria-label="Delete"
                     title="Delete"
@@ -92,7 +81,7 @@ export default function Index() {
                     variant="ghost"
                     type="submit"
                   />
-                </Form>
+                </Delete>
               </Flex>
             </Flex>
           ))}

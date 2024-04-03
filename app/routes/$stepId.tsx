@@ -4,26 +4,47 @@ import {
   ArrowForwardIcon,
   ArrowBackIcon,
 } from "@chakra-ui/icons";
-import { Flex, Heading, chakra, useBoolean } from "@chakra-ui/react";
-import { LoaderFunction, LoaderFunctionArgs, json } from "@remix-run/node";
+import {
+  Container,
+  Flex,
+  Heading,
+  IconButton,
+  Input,
+  chakra,
+  useBoolean,
+} from "@chakra-ui/react";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import invariant from "tiny-invariant";
+import { authenticator } from "~/auth/authenticator.server";
 import { getStep } from "~/db";
+import Delete from "./$stepId.delete";
+import DeleteIcon from "~/icons/DeleteIcon";
+import EditIcon from "~/icons/EditIcon";
+import CheckIcon from "~/icons/CheckIcon";
+import CrossIcon from "~/icons/CrossIcon";
 
 const MAX_NOTES = 140;
 const DEBOUNCE_TIME = 1000;
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
-  invariant(params.stepId, "Missing Step ID");
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+  invariant(params.stepId, "Step ID is missing.");
 
+  const user = (await authenticator.isAuthenticated(request)) || undefined;
   const step = await getStep(params.stepId);
-  return json({ step });
+
+  invariant(step, `We failed to load Step with ID ${params.stepId}.`);
+  const isOwner = user?.id === step.owner;
+
+  return json({ step, isOwner });
 };
 
 export default function Step() {
-  const { step } = useLoaderData<typeof loader>();
-  const [data, setData] = useState<number[][]>(step?.steps ?? [[], [], [], []]);
+  const { step, isOwner } = useLoaderData<typeof loader>();
+  const [data, setData] = useState<number[][]>(step.steps ?? [[], [], [], []]);
+  const [isEdit, setIsEdit] = useState(false);
+  const [title, setTitle] = useState(step.title);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -34,7 +55,64 @@ export default function Step() {
 
   return (
     <Flex flexDir="column" gap="5" align="center">
-      <Heading size="lg">{step?.title}</Heading>
+      <Container centerContent>
+        {isEdit ? (
+          <Flex gap="2" align="center" width="100%">
+            <Input
+              value={title}
+              onChange={(event) => {
+                setTitle(event.target.value);
+              }}
+              size="lg"
+            />
+            <IconButton
+              aria-label="Confirm"
+              title="Confirm"
+              icon={<CheckIcon />}
+              variant="ghost"
+              onClick={() => setIsEdit(true)}
+            />
+            <IconButton
+              aria-label="Cancel"
+              title="Cancel"
+              icon={<CrossIcon />}
+              variant="ghost"
+              onClick={() => {
+                setIsEdit(false);
+                setTitle(step.title);
+              }}
+            />
+          </Flex>
+        ) : (
+          <Flex gap="2" width="100%" justify="center">
+            <Heading size="lg" minWidth="0">
+              {step?.title}
+              omgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomg
+            </Heading>
+            {isOwner && (
+              <IconButton
+                aria-label="Edit"
+                title="Edit"
+                icon={<EditIcon />}
+                variant="ghost"
+                onClick={() => setIsEdit(true)}
+              />
+            )}
+          </Flex>
+        )}
+      </Container>
+
+      {isOwner && (
+        <Delete id={step.id} title={step.title}>
+          <IconButton
+            aria-label="Delete"
+            title="Delete"
+            icon={<DeleteIcon />}
+            variant="ghost"
+            type="submit"
+          />
+        </Delete>
+      )}
       <Flex justify="center">
         <Column data={data} setData={setData} index={0} />
         <Column data={data} setData={setData} index={1} />
