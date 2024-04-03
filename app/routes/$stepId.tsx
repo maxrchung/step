@@ -10,12 +10,13 @@ import {
   Heading,
   IconButton,
   Input,
+  Spinner,
   chakra,
   useBoolean,
   useToast,
 } from "@chakra-ui/react";
 import { LoaderFunctionArgs, json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useFetcher, useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import invariant from "tiny-invariant";
 import { authenticator } from "~/auth/authenticator.server";
@@ -48,6 +49,7 @@ export default function Step() {
   const [isEdit, setIsEdit] = useState(false);
   const [title, setTitle] = useState(step.title);
   const toast = useToast();
+  const fetcherEditName = useFetcher();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -56,16 +58,30 @@ export default function Step() {
     return () => clearTimeout(timeout);
   }, [data]);
 
+  useEffect(() => {
+    if (fetcherEditName.data) {
+      setIsEdit(false);
+    }
+  }, [fetcherEditName.data]);
+
   return (
     <Flex flexDir="column" gap="5" align="center">
       <Container centerContent>
         {isEdit ? (
-          <Flex gap="2" align="center" width="100%">
+          <Flex
+            gap="2"
+            align="center"
+            width="100%"
+            as={fetcherEditName.Form}
+            action={`/${step.id}/editname`}
+            method="patch"
+          >
             <Input
               value={title}
               onChange={(event) => {
                 setTitle(event.target.value);
               }}
+              name="title"
             />
             <Flex>
               <IconButton
@@ -73,8 +89,10 @@ export default function Step() {
                 title="Confirm"
                 icon={<CheckIcon />}
                 variant="ghost"
-                onClick={() => setIsEdit(true)}
+                type="submit"
+                isDisabled={fetcherEditName.state === "submitting"}
               />
+
               <IconButton
                 aria-label="Cancel"
                 title="Cancel"

@@ -89,3 +89,11 @@ export const deleteStep = (id: string) =>
     TableName: Table.steps.tableName,
     Key: { id },
   });
+
+export const updateName = (id: string, title: string) =>
+  db.update({
+    TableName: Table.steps.tableName,
+    Key: { id },
+    UpdateExpression: "set title = :title",
+    ExpressionAttributeValues: { ":title": title },
+  });

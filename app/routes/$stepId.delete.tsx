@@ -1,7 +1,6 @@
-import { useToast } from "@chakra-ui/react";
 import { ActionFunction, redirect } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
-import { PropsWithChildren, ReactNode, useEffect } from "react";
+import { Form } from "@remix-run/react";
+import { ReactNode } from "react";
 import invariant from "tiny-invariant";
 import { authenticator } from "~/auth/authenticator.server";
 import { getSession, commitSession } from "~/auth/session.server";
