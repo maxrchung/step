@@ -12,6 +12,7 @@ import {
   Input,
   chakra,
   useBoolean,
+  useToast,
 } from "@chakra-ui/react";
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
@@ -24,6 +25,7 @@ import DeleteIcon from "~/icons/DeleteIcon";
 import EditIcon from "~/icons/EditIcon";
 import CheckIcon from "~/icons/CheckIcon";
 import CrossIcon from "~/icons/CrossIcon";
+import LinkIcon from "~/icons/LinkIcon";
 
 const MAX_NOTES = 140;
 const DEBOUNCE_TIME = 1000;
@@ -45,6 +47,7 @@ export default function Step() {
   const [data, setData] = useState<number[][]>(step.steps ?? [[], [], [], []]);
   const [isEdit, setIsEdit] = useState(false);
   const [title, setTitle] = useState(step.title);
+  const toast = useToast();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -63,36 +66,37 @@ export default function Step() {
               onChange={(event) => {
                 setTitle(event.target.value);
               }}
-              size="lg"
             />
-            <IconButton
-              aria-label="Confirm"
-              title="Confirm"
-              icon={<CheckIcon />}
-              variant="ghost"
-              onClick={() => setIsEdit(true)}
-            />
-            <IconButton
-              aria-label="Cancel"
-              title="Cancel"
-              icon={<CrossIcon />}
-              variant="ghost"
-              onClick={() => {
-                setIsEdit(false);
-                setTitle(step.title);
-              }}
-            />
+            <Flex>
+              <IconButton
+                aria-label="Confirm"
+                title="Confirm"
+                icon={<CheckIcon />}
+                variant="ghost"
+                onClick={() => setIsEdit(true)}
+              />
+              <IconButton
+                aria-label="Cancel"
+                title="Cancel"
+                icon={<CrossIcon />}
+                variant="ghost"
+                onClick={() => {
+                  setIsEdit(false);
+                  setTitle(step.title);
+                }}
+              />
+            </Flex>
           </Flex>
         ) : (
           <Flex gap="2" width="100%" justify="center">
             <Heading size="lg" minWidth="0">
-              {step?.title}
-              omgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomgomg
+              {step.title}
             </Heading>
+
             {isOwner && (
               <IconButton
-                aria-label="Edit"
-                title="Edit"
+                aria-label="Edit name"
+                title="Edit name"
                 icon={<EditIcon />}
                 variant="ghost"
                 onClick={() => setIsEdit(true)}
@@ -102,17 +106,34 @@ export default function Step() {
         )}
       </Container>
 
-      {isOwner && (
-        <Delete id={step.id} title={step.title}>
-          <IconButton
-            aria-label="Delete"
-            title="Delete"
-            icon={<DeleteIcon />}
-            variant="ghost"
-            type="submit"
-          />
-        </Delete>
-      )}
+      <Flex>
+        <IconButton
+          aria-label="Copy link"
+          title="Copy link"
+          icon={<LinkIcon />}
+          variant="ghost"
+          onClick={() => {
+            navigator.clipboard.writeText(location.href);
+            toast({
+              description: "Link copied to clipboard.",
+              status: "success",
+            });
+          }}
+        />
+
+        {isOwner && (
+          <Delete id={step.id} title={step.title}>
+            <IconButton
+              aria-label="Delete"
+              title="Delete"
+              icon={<DeleteIcon />}
+              variant="ghost"
+              type="submit"
+            />
+          </Delete>
+        )}
+      </Flex>
+
       <Flex justify="center">
         <Column data={data} setData={setData} index={0} />
         <Column data={data} setData={setData} index={1} />

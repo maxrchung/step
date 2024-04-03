@@ -64,14 +64,20 @@ export default function Index() {
               </ChakraLink>
 
               <Flex>
-                <IconButton
-                  as={Link}
-                  to={`/${id}`}
-                  aria-label="Edit"
-                  title="Edit"
-                  icon={<EditIcon />}
-                  variant="ghost"
-                />
+                {/*
+                  I'm removing this for now. I feel like it might be slightly
+                  confusing if there is an edit button here as well as in the
+                  Step page that do different things.
+                
+                  <IconButton
+                    as={Link}
+                    to={`/${id}`}
+                    aria-label="Edit"
+                    title="Edit"
+                    icon={<EditIcon />}
+                    variant="ghost"
+                  />
+                */}
 
                 <Delete id={id} title={title}>
                   <IconButton
