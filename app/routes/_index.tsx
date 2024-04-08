@@ -54,7 +54,7 @@ export default function Index() {
               key={id}
               align="center"
               justify="space-between"
-              bgColor={index % 2 === 0 ? "gray.50" : undefined}
+              bgColor={index % 2 === 1 ? "gray.50" : undefined}
               p={2}
               borderRadius="md"
               gap={2}
