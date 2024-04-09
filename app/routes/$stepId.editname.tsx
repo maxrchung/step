@@ -1,13 +1,8 @@
-import { CheckIcon } from "@chakra-ui/icons";
-import { Flex, Input, IconButton } from "@chakra-ui/react";
 import { ActionFunction, json, redirect } from "@remix-run/node";
-import { Form, useFetcher } from "@remix-run/react";
-import { ReactNode, useState } from "react";
 import invariant from "tiny-invariant";
 import { authenticator } from "~/auth/authenticator.server";
 import { getSession, commitSession } from "~/auth/session.server";
-import { deleteStep, getStep, updateName } from "~/db";
-import CrossIcon from "~/icons/CrossIcon";
+import { updateName } from "~/db";
 
 export const action: ActionFunction = async ({ params, request }) => {
   invariant(params.stepId, "Step ID is missing.");
