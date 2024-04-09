@@ -1,4 +1,4 @@
-import { ActionFunction, redirect } from "@remix-run/node";
+import { ActionFunction, json, redirect } from "@remix-run/node";
 import { Form } from "@remix-run/react";
 import { ReactNode } from "react";
 import invariant from "tiny-invariant";
@@ -27,6 +27,9 @@ export const action: ActionFunction = async ({ params, request }) => {
 
   const id = params.stepId;
   const step = await getStep(id);
+  if (user.id !== step?.owner) {
+    return json({}, { status: 403 });
+  }
 
   await deleteStep(id);
 

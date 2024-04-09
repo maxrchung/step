@@ -2,7 +2,7 @@ import { ActionFunction, json, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { authenticator } from "~/auth/authenticator.server";
 import { getSession, commitSession } from "~/auth/session.server";
-import { updateSteps } from "~/db";
+import { getStep, updateSteps } from "~/db";
 
 export const action: ActionFunction = async ({ params, request }) => {
   invariant(params.stepId, "Step ID is missing.");
@@ -24,6 +24,11 @@ export const action: ActionFunction = async ({ params, request }) => {
   }
 
   const id = params.stepId;
+  const step = await getStep(id);
+  if (user.id !== step?.owner) {
+    return json({}, { status: 403 });
+  }
+
   const { steps } = await request.json();
 
   await updateSteps(id, steps);
