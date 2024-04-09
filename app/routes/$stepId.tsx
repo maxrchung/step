@@ -5,6 +5,7 @@ import {
   ArrowBackIcon,
 } from "@chakra-ui/icons";
 import {
+  Box,
   Container,
   Flex,
   Heading,
@@ -266,12 +267,13 @@ const StepComponents = [
 ];
 
 const StepButton = ({ columnIndex, setStep, hasStep }: StepButtonProps) => {
+  const { isOwner } = useLoaderData<typeof loader>();
   const StepComponent = StepComponents[columnIndex];
   const [isHover, setIsHover] = useBoolean();
   const [isStepHover, setIsStepHover] = useBoolean();
   const shouldShowStep = hasStep || isHover;
 
-  return (
+  return isOwner ? (
     <chakra.button
       onClick={hasStep ? undefined : () => setStep(true)}
       position="relative"
@@ -310,5 +312,32 @@ const StepButton = ({ columnIndex, setStep, hasStep }: StepButtonProps) => {
         />
       )}
     </chakra.button>
+  ) : (
+    <Box
+      position="relative"
+      bg="gray.100"
+      display="flex"
+      justifyContent="center"
+      h="8"
+    >
+      <chakra.hr
+        pos="absolute"
+        width="100%"
+        top="50%"
+        transform="translateY(-50%)"
+        borderColor="gray.300"
+      />
+      {shouldShowStep && (
+        <StepComponent
+          pos="absolute"
+          top="50%"
+          transform="translateY(-50%)"
+          zIndex={100}
+          w={10}
+          h={10}
+          color="red.500"
+        />
+      )}
+    </Box>
   );
 };
