@@ -97,3 +97,11 @@ export const updateName = (id: string, title: string) =>
     UpdateExpression: "set title = :title",
     ExpressionAttributeValues: { ":title": title },
   });
+
+export const updateSteps = (id: string, steps: number[][]) =>
+  db.update({
+    TableName: Table.steps.tableName,
+    Key: { id },
+    UpdateExpression: "set steps = :steps",
+    ExpressionAttributeValues: { ":steps": steps },
+  });

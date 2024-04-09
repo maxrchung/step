@@ -10,7 +10,6 @@ import {
   Heading,
   IconButton,
   Input,
-  Spinner,
   chakra,
   useBoolean,
   useToast,
@@ -37,6 +36,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const user = (await authenticator.isAuthenticated(request)) || undefined;
   const step = await getStep(params.stepId);
 
+  console.log("step", step);
+
   invariant(step, `We failed to load Step with ID ${params.stepId}.`);
   const isOwner = user?.id === step.owner;
 
@@ -49,20 +50,29 @@ export default function Step() {
   const [isEdit, setIsEdit] = useState(false);
   const [title, setTitle] = useState(step.title);
   const toast = useToast();
-  const editFetcher = useFetcher();
+  const editNameFetcher = useFetcher();
+  const editStepsFetcher = useFetcher();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       console.log(data);
+      editStepsFetcher.submit(
+        { steps: data },
+        {
+          action: `/${step.id}/editsteps`,
+          method: "patch",
+          encType: "application/json",
+        }
+      );
     }, DEBOUNCE_TIME);
     return () => clearTimeout(timeout);
   }, [data]);
 
   useEffect(() => {
-    if (editFetcher.data) {
+    if (editNameFetcher.data) {
       setIsEdit(false);
     }
-  }, [editFetcher.data]);
+  }, [editNameFetcher.data]);
 
   return (
     <Flex flexDir="column" gap="5" align="center">
@@ -72,7 +82,7 @@ export default function Step() {
             gap="2"
             align="center"
             width="100%"
-            as={editFetcher.Form}
+            as={editNameFetcher.Form}
             action={`/${step.id}/editname`}
             method="patch"
             onSubmit={(event) => {
@@ -96,7 +106,7 @@ export default function Step() {
                 icon={<CheckIcon />}
                 variant="ghost"
                 type="submit"
-                isDisabled={editFetcher.state === "submitting"}
+                isDisabled={editNameFetcher.state === "submitting"}
               />
 
               <IconButton
