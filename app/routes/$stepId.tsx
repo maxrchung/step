@@ -10,6 +10,7 @@ import {
   Heading,
   IconButton,
   Input,
+  Select,
   chakra,
   useBoolean,
   useToast,
@@ -19,13 +20,14 @@ import { useFetcher, useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import invariant from "tiny-invariant";
 import { authenticator } from "~/auth/authenticator.server";
-import { getStep } from "~/db";
+import { Style, getStep } from "~/db";
 import Delete from "./$stepId.delete";
 import DeleteIcon from "~/icons/DeleteIcon";
 import EditIcon from "~/icons/EditIcon";
 import CheckIcon from "~/icons/CheckIcon";
 import CrossIcon from "~/icons/CrossIcon";
 import LinkIcon from "~/icons/LinkIcon";
+import useInitial from "~/hooks/useInitial";
 
 const MAX_NOTES = 140;
 const DEBOUNCE_TIME = 1000;
@@ -36,8 +38,6 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const user = (await authenticator.isAuthenticated(request)) || undefined;
   const step = await getStep(params.stepId);
 
-  console.log("step", step);
-
   invariant(step, `We failed to load Step with ID ${params.stepId}.`);
   const isOwner = user?.id === step.owner;
 
@@ -46,16 +46,21 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
 export default function Step() {
   const { step, isOwner } = useLoaderData<typeof loader>();
-  const [data, setData] = useState<number[][]>(step.steps ?? [[], [], [], []]);
+  const [style, setStyle] = useState<Style>(step.style);
+  const [data, setData] = useState<number[][]>(step.steps);
   const [isEdit, setIsEdit] = useState(false);
   const [title, setTitle] = useState(step.title);
   const toast = useToast();
   const editNameFetcher = useFetcher();
   const editStepsFetcher = useFetcher();
+  const isInitial = useInitial();
 
   useEffect(() => {
+    if (!isOwner || isInitial) {
+      return;
+    }
+
     const timeout = setTimeout(() => {
-      console.log(data);
       editStepsFetcher.submit(
         { steps: data },
         {
@@ -141,6 +146,30 @@ export default function Step() {
       </Container>
 
       <Flex>
+        {isOwner && (
+          <Select
+            isDisabled={!isOwner}
+            onChange={(event) => {
+              const option = event.target.value as Style;
+
+              const response = confirm(
+                "Are you sure you want to change the style? All the current steps will be deleted."
+              );
+
+              if (response) {
+                setStyle(option);
+                setData([[], [], [], []]);
+              }
+            }}
+            value={style}
+            mr={2}
+          >
+            {Object.values(Style).map((style) => (
+              <option key={style}>{style}</option>
+            ))}
+          </Select>
+        )}
+
         <IconButton
           aria-label="Copy link"
           title="Copy link"
