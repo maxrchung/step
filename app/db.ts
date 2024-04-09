@@ -4,13 +4,13 @@ import { Table } from "sst/node/table";
 
 const db = DynamoDBDocument.from(new DynamoDBClient({}));
 
-enum Style {
-  DDR_SINGLE = "DDR_SINGLE",
-  DDR_DOUBLE = "DDR_DOUBLE",
-  PIU_SINGLE = "PIU_SINGLE",
-  PIU_DOUBLE = "PIU_DOUBLE",
-  SMX_SINGLE = "SMX_SINGLE",
-  SMX_DOUBLE = "SMX_DOUBLE",
+export enum Style {
+  DDR_SINGLE = "DDR Single",
+  DDR_DOUBLE = "DDR Double",
+  PIU_SINGLE = "PIU Single",
+  PIU_DOUBLE = "PIU Double",
+  SMX_SINGLE = "SMX Single",
+  SMX_DOUBLE = "SMX Double",
 }
 
 interface Step {
