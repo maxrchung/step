@@ -28,9 +28,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const count = await getStepsCount(user.id);
   if (count >= MAX_STEPS) {
-    return json({
-      error: `We failed to create a Step. Users are currently limited to ${MAX_STEPS} Steps.`,
-    });
+    return json(
+      {
+        error: `We failed to create a Step. Users are limited to ${MAX_STEPS} Steps.`,
+      },
+      { status: 400 }
+    );
   }
 
   let id = uid();
