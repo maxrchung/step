@@ -12,7 +12,7 @@ export const action: ActionFunction = async ({ params, request }) => {
   if (!user) {
     const session = await getSession();
     session.flash("message", {
-      text: "Sign-in is required to edit Step.",
+      text: "Sign-in is required to edit steps.",
       status: "error",
     });
 
