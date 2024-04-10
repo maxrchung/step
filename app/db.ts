@@ -105,3 +105,11 @@ export const updateSteps = (id: string, steps: number[][]) =>
     UpdateExpression: "set steps = :steps",
     ExpressionAttributeValues: { ":steps": steps },
   });
+
+export const updateStyle = (id: string, style: Style) =>
+  db.update({
+    TableName: Table.steps.tableName,
+    Key: { id },
+    UpdateExpression: "set style = :style",
+    ExpressionAttributeValues: { ":style": style },
+  });
