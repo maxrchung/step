@@ -1,5 +1,10 @@
 import { useToast } from "@chakra-ui/react";
-import { ActionFunctionArgs, json, redirect } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  json,
+  redirect,
+  redirectDocument,
+} from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import { PropsWithChildren, useEffect } from "react";
 import { uid } from "uid";
@@ -48,7 +53,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     status: "success",
   });
 
-  return redirect(`/${id}`, {
+  // It's possible to create a new step in nav bar while already on the stepId
+  // route. This causes some issues with state management since the step is new
+  // but the state still thinks you are on previous page. To fix this,
+  // redirectDocument instead of redirect seems to work as it forces the
+  // useStates to run again. Maybe not the optimal solution but works for me for
+  // now.
+  return redirectDocument(`/${id}`, {
     headers: {
       "Set-Cookie": await commitSession(session),
     },
