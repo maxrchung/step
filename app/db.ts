@@ -31,11 +31,13 @@ interface OwnerStep {
 }
 
 export const createStep = (id: string, owner: string) => {
-  const iso = new Date().toISOString();
+  const date = new Date();
+  const iso = date.toISOString();
   const item: Step = {
     id,
     owner,
-    title: "My Step",
+    // Probably not very locale aware since this is on server
+    title: date.toLocaleString(),
     style: Style.DDR_SINGLE,
     steps: [[], [], [], []],
     created: iso,
@@ -90,26 +92,32 @@ export const deleteStep = (id: string) =>
     Key: { id },
   });
 
-export const updateName = (id: string, title: string) =>
-  db.update({
+export const updateName = (id: string, title: string) => {
+  const updated = new Date().toISOString();
+  return db.update({
     TableName: Table.steps.tableName,
     Key: { id },
-    UpdateExpression: "set title = :title",
-    ExpressionAttributeValues: { ":title": title },
+    UpdateExpression: "set title = :title, updated = :updated",
+    ExpressionAttributeValues: { ":title": title, ":updated": updated },
   });
+};
 
-export const updateSteps = (id: string, steps: number[][]) =>
-  db.update({
+export const updateSteps = (id: string, steps: number[][]) => {
+  const updated = new Date().toISOString();
+  return db.update({
     TableName: Table.steps.tableName,
     Key: { id },
-    UpdateExpression: "set steps = :steps",
-    ExpressionAttributeValues: { ":steps": steps },
+    UpdateExpression: "set steps = :steps, updated = :updated",
+    ExpressionAttributeValues: { ":steps": steps, ":updated": updated },
   });
+};
 
-export const updateStyle = (id: string, style: Style) =>
-  db.update({
+export const updateStyle = (id: string, style: Style) => {
+  const updated = new Date().toISOString();
+  return db.update({
     TableName: Table.steps.tableName,
     Key: { id },
-    UpdateExpression: "set style = :style",
-    ExpressionAttributeValues: { ":style": style },
+    UpdateExpression: "set style = :style, updated = :updated",
+    ExpressionAttributeValues: { ":style": style, ":updated": updated },
   });
+};
