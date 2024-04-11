@@ -52,7 +52,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 export default function Step() {
   const { step, isOwner } = useLoaderData<typeof loader>();
   const [style, setStyle] = useState<Style>(step.style);
-  const [data, setData] = useState<number[][]>(step.steps);
+  const [steps, setSteps] = useState<number[][]>(step.steps);
   const [isEdit, setIsEdit] = useState(false);
   const [title, setTitle] = useState(step.title);
   const toast = useToast();
@@ -68,7 +68,7 @@ export default function Step() {
 
     const timeout = setTimeout(() => {
       editStepsFetcher.submit(
-        { steps: data },
+        { steps: steps },
         {
           action: `/${step.id}/editsteps`,
           method: "patch",
@@ -77,7 +77,7 @@ export default function Step() {
       );
     }, DEBOUNCE_TIME);
     return () => clearTimeout(timeout);
-  }, [data]);
+  }, [steps]);
 
   useEffect(() => {
     if (editNameFetcher.data) {
@@ -158,7 +158,7 @@ export default function Step() {
             onChange={(event) => {
               const option = event.target.value as Style;
 
-              const response = data.find((column) => column.length > 0)
+              const response = steps.find((column) => column.length > 0)
                 ? confirm(
                     "Are you sure you want to change the style? All the current steps will be deleted."
                   )
@@ -172,7 +172,7 @@ export default function Step() {
                   action: `/${step.id}/editstyle`,
                 });
                 setStyle(option);
-                setData([[], [], [], []]);
+                setSteps([[], [], [], []]);
               }
             }}
             value={style}
@@ -212,10 +212,10 @@ export default function Step() {
       </Flex>
 
       <Flex justify="center">
-        <Column data={data} setData={setData} index={0} />
-        <Column data={data} setData={setData} index={1} />
-        <Column data={data} setData={setData} index={2} />
-        <Column data={data} setData={setData} index={3} />
+        <Column data={steps} setData={setSteps} index={0} />
+        <Column data={steps} setData={setSteps} index={1} />
+        <Column data={steps} setData={setSteps} index={2} />
+        <Column data={steps} setData={setSteps} index={3} />
       </Flex>
     </Flex>
   );
