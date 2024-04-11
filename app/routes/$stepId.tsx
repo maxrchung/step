@@ -16,7 +16,7 @@ import {
   useBoolean,
   useToast,
 } from "@chakra-ui/react";
-import { LoaderFunctionArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, MetaFunction, json } from "@remix-run/node";
 import { useFetcher, useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import invariant from "tiny-invariant";
@@ -43,6 +43,10 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const isOwner = user?.id === step.owner;
 
   return json({ step, isOwner });
+};
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data?.step.title ? `${data?.step.title} - Step` : "Step" }];
 };
 
 export default function Step() {
