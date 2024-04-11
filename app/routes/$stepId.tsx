@@ -153,9 +153,11 @@ export default function Step() {
             onChange={(event) => {
               const option = event.target.value as Style;
 
-              const response = confirm(
-                "Are you sure you want to change the style? All the current steps will be deleted."
-              );
+              const response = data.find((column) => column.length > 0)
+                ? confirm(
+                    "Are you sure you want to change the style? All the current steps will be deleted."
+                  )
+                : true;
 
               if (response) {
                 setStyle(option);
