@@ -53,6 +53,7 @@ export default function Step() {
   const [title, setTitle] = useState(step.title);
   const toast = useToast();
   const editNameFetcher = useFetcher();
+  const editStepFetcher = useFetcher();
   const editStepsFetcher = useFetcher();
   const isInitial = useInitial();
 
@@ -160,6 +161,12 @@ export default function Step() {
                 : true;
 
               if (response) {
+                const formData = new FormData();
+                formData.set("style", option);
+                editStepFetcher.submit(formData, {
+                  method: "post",
+                  action: `/${step.id}/editstyle`,
+                });
                 setStyle(option);
                 setData([[], [], [], []]);
               }

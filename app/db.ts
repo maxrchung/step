@@ -117,7 +117,8 @@ export const updateStyle = (id: string, style: Style) => {
   return db.update({
     TableName: Table.steps.tableName,
     Key: { id },
-    UpdateExpression: "set style = :style, updated = :updated",
+    UpdateExpression: "set #style = :style, updated = :updated",
+    ExpressionAttributeNames: { "#style": "style" },
     ExpressionAttributeValues: { ":style": style, ":updated": updated },
   });
 };
