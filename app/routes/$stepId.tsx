@@ -29,6 +29,7 @@ import CheckIcon from "~/icons/CheckIcon";
 import CrossIcon from "~/icons/CrossIcon";
 import LinkIcon from "~/icons/LinkIcon";
 import useInitial from "~/hooks/useInitial";
+import BackspaceIcon from "~/icons/BackspaceIcon";
 
 const MAX_NOTES = 140;
 const DEBOUNCE_TIME = 1000;
@@ -57,8 +58,9 @@ export default function Step() {
   const [title, setTitle] = useState(step.title);
   const toast = useToast();
   const editNameFetcher = useFetcher();
-  const editStepFetcher = useFetcher();
+  const editStyleFetcher = useFetcher();
   const editStepsFetcher = useFetcher();
+  const clearAllFetcher = useFetcher();
   const isInitial = useInitial();
 
   useEffect(() => {
@@ -67,6 +69,7 @@ export default function Step() {
     }
 
     const timeout = setTimeout(() => {
+      console.log("steps", steps);
       editStepsFetcher.submit(
         { steps: steps },
         {
@@ -76,6 +79,7 @@ export default function Step() {
         }
       );
     }, DEBOUNCE_TIME);
+
     return () => clearTimeout(timeout);
   }, [steps]);
 
@@ -167,7 +171,7 @@ export default function Step() {
               if (response) {
                 const formData = new FormData();
                 formData.set("style", option);
-                editStepFetcher.submit(formData, {
+                editStyleFetcher.submit(formData, {
                   method: "post",
                   action: `/${step.id}/editstyle`,
                 });
@@ -197,6 +201,24 @@ export default function Step() {
             });
           }}
         />
+
+        {isOwner && (
+          <IconButton
+            aria-label="Clear all"
+            title="Clear all"
+            icon={<BackspaceIcon />}
+            variant="ghost"
+            onClick={() => {
+              const response = confirm(
+                "Are you sure you want to clear all the current steps? This cannot be undone."
+              );
+
+              if (response) {
+                setSteps([[], [], [], []]);
+              }
+            }}
+          />
+        )}
 
         {isOwner && (
           <Delete id={step.id} title={step.title}>
