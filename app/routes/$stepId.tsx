@@ -30,6 +30,7 @@ import CrossIcon from "~/icons/CrossIcon";
 import LinkIcon from "~/icons/LinkIcon";
 import useInitial from "~/hooks/useInitial";
 import BackspaceIcon from "~/icons/BackspaceIcon";
+import DdrUp from "~/icons/DdrUp";
 
 const MAX_NOTES = 140;
 const DEBOUNCE_TIME = 1000;
@@ -294,12 +295,7 @@ interface StepButtonProps {
   hasStep: boolean;
 }
 
-const StepComponents = [
-  ArrowBackIcon,
-  ArrowDownIcon,
-  ArrowUpIcon,
-  ArrowForwardIcon,
-];
+const StepComponents = [ArrowBackIcon, ArrowDownIcon, DdrUp, ArrowForwardIcon];
 
 const StepButton = ({ columnIndex, setStep, hasStep }: StepButtonProps) => {
   const { isOwner } = useLoaderData<typeof loader>();
@@ -333,8 +329,8 @@ const StepButton = ({ columnIndex, setStep, hasStep }: StepButtonProps) => {
           transform="translateY(-50%)"
           zIndex={100}
           onClick={() => setStep(false)}
-          w={10}
-          h={10}
+          w={8}
+          h={8}
           onMouseEnter={setIsStepHover.on}
           onMouseLeave={setIsStepHover.off}
           color={
