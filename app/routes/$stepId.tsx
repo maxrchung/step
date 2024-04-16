@@ -1,11 +1,6 @@
 import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  ArrowForwardIcon,
-  ArrowBackIcon,
-} from "@chakra-ui/icons";
-import {
   Box,
+  CheckboxIcon,
   Container,
   Flex,
   Heading,
@@ -23,14 +18,20 @@ import invariant from "tiny-invariant";
 import { authenticator } from "~/auth/authenticator.server";
 import { Style, getStep } from "~/db";
 import Delete from "./$stepId.delete";
-import DeleteIcon from "~/icons/DeleteIcon";
-import EditIcon from "~/icons/EditIcon";
-import CheckIcon from "~/icons/CheckIcon";
-import CrossIcon from "~/icons/CrossIcon";
-import LinkIcon from "~/icons/LinkIcon";
 import useInitial from "~/hooks/useInitial";
-import BackspaceIcon from "~/icons/BackspaceIcon";
 import DdrUp from "~/icons/DdrUp";
+import CommonIcon from "~/icons/CommonIcon";
+import {
+  BackspaceOutline,
+  CloseOutline,
+  CreateOutline,
+  DdrDown,
+  DdrLeft,
+  DdrRight,
+  LinkOutline,
+  TrashOutline,
+} from "~/icons";
+import StepIcon from "~/icons/StepIcon";
 
 const MAX_NOTES = 140;
 const DEBOUNCE_TIME = 1000;
@@ -119,7 +120,7 @@ export default function Step() {
               <IconButton
                 aria-label="Confirm"
                 title="Confirm"
-                icon={<CheckIcon />}
+                icon={<CommonIcon as={CheckboxIcon} />}
                 variant="ghost"
                 type="submit"
                 isDisabled={editNameFetcher.state === "submitting"}
@@ -128,7 +129,7 @@ export default function Step() {
               <IconButton
                 aria-label="Cancel"
                 title="Cancel"
-                icon={<CrossIcon />}
+                icon={<CommonIcon as={CloseOutline} />}
                 variant="ghost"
                 onClick={() => {
                   setIsEdit(false);
@@ -147,7 +148,7 @@ export default function Step() {
               <IconButton
                 aria-label="Edit name"
                 title="Edit name"
-                icon={<EditIcon />}
+                icon={<CommonIcon as={CreateOutline} />}
                 variant="ghost"
                 onClick={() => setIsEdit(true)}
               />
@@ -192,7 +193,7 @@ export default function Step() {
         <IconButton
           aria-label="Copy link"
           title="Copy link"
-          icon={<LinkIcon />}
+          icon={<CommonIcon as={LinkOutline} />}
           variant="ghost"
           onClick={() => {
             navigator.clipboard.writeText(location.href);
@@ -207,7 +208,7 @@ export default function Step() {
           <IconButton
             aria-label="Clear all"
             title="Clear all"
-            icon={<BackspaceIcon />}
+            icon={<CommonIcon as={BackspaceOutline} />}
             variant="ghost"
             onClick={() => {
               const response = confirm(
@@ -226,7 +227,7 @@ export default function Step() {
             <IconButton
               aria-label="Delete"
               title="Delete"
-              icon={<DeleteIcon />}
+              icon={<CommonIcon as={TrashOutline} />}
               variant="ghost"
               type="submit"
             />
@@ -295,11 +296,10 @@ interface StepButtonProps {
   hasStep: boolean;
 }
 
-const StepComponents = [ArrowBackIcon, ArrowDownIcon, DdrUp, ArrowForwardIcon];
+const StepIcons = [DdrLeft, DdrDown, DdrUp, DdrRight];
 
 const StepButton = ({ columnIndex, setStep, hasStep }: StepButtonProps) => {
   const { isOwner } = useLoaderData<typeof loader>();
-  const StepComponent = StepComponents[columnIndex];
   const [isHover, setIsHover] = useBoolean();
   const [isStepHover, setIsStepHover] = useBoolean();
   const shouldShowStep = hasStep || isHover;
@@ -323,7 +323,8 @@ const StepButton = ({ columnIndex, setStep, hasStep }: StepButtonProps) => {
         borderColor="gray.300"
       />
       {shouldShowStep && (
-        <StepComponent
+        <StepIcon
+          as={StepIcons[columnIndex]}
           pos="absolute"
           top="50%"
           transform="translateY(-50%)"
@@ -359,7 +360,8 @@ const StepButton = ({ columnIndex, setStep, hasStep }: StepButtonProps) => {
         borderColor="gray.300"
       />
       {shouldShowStep && (
-        <StepComponent
+        <StepIcon
+          as={StepIcons[columnIndex]}
           pos="absolute"
           top="50%"
           transform="translateY(-50%)"

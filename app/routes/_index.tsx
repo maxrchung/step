@@ -11,11 +11,10 @@ import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { authenticator } from "~/auth/authenticator.server";
 import { getSteps } from "~/db";
-import DeleteIcon from "~/icons/DeleteIcon";
-import EditIcon from "~/icons/EditIcon";
-import PlusIcon from "~/icons/PlusIcon";
 import Create from "./create";
 import Delete from "./$stepId.delete";
+import { AddOutline, TrashOutline } from "~/icons";
+import CommonIcon from "~/icons/CommonIcon";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request);
@@ -43,7 +42,7 @@ export default function Index() {
             alignSelf="center"
             type="submit"
           >
-            <PlusIcon />
+            <CommonIcon as={AddOutline} />
             Create a new Step
           </Button>
         </Create>
@@ -83,7 +82,7 @@ export default function Index() {
                   <IconButton
                     aria-label="Delete"
                     title="Delete"
-                    icon={<DeleteIcon />}
+                    icon={<CommonIcon as={TrashOutline} />}
                     variant="ghost"
                     type="submit"
                   />

@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { SVGProps } from "react";
-const SvgDdrUp = (props: SVGProps<SVGSVGElement>) => (
+const SvgDdrDown = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlSpace="preserve"
@@ -15,7 +15,7 @@ const SvgDdrUp = (props: SVGProps<SVGSVGElement>) => (
       }}
     >
       <path
-        d="M.265 8.731s-.183 1.059.905 2.117 2.005.794 2.005.794l2.91-2.91v5.026l2.382 2.382 2.38-2.382V8.731l2.911 2.91s.918.265 2.005-.793c1.088-1.058.906-2.117.906-2.117L8.467.53Z"
+        d="M16.669 7.937s.182-1.058-.906-2.116c-1.087-1.059-2.005-.794-2.005-.794l-2.91 2.91V2.91L8.467.53 6.085 2.91v5.027l-2.91-2.91s-.917-.265-2.005.794C.082 6.879.265 7.937.265 7.937l8.202 8.203Z"
         style={{
           fontVariationSettings: "normal",
           display: "inline",
@@ -39,4 +39,4 @@ const SvgDdrUp = (props: SVGProps<SVGSVGElement>) => (
     </g>
   </svg>
 );
-export default SvgDdrUp;
+export default SvgDdrDown;

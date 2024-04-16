@@ -8,11 +8,14 @@ import {
 } from "@chakra-ui/react";
 import { Form, Link } from "@remix-run/react";
 import { User } from "~/auth/authenticator.server";
-import HomeIcon from "~/icons/HomeIcon";
-import GitHubIcon from "~/icons/GitHubIcon";
-import PlusIcon from "~/icons/PlusIcon";
-import UserIcon from "~/icons/UserIcon";
-import TwitterIcon from "~/icons/TwitterIcon";
+import {
+  AddOutline,
+  HomeOutline,
+  LogoGithub,
+  LogoTwitter,
+  PersonOutline,
+} from "~/icons";
+import CommonIcon from "~/icons/CommonIcon";
 import Create from "~/routes/create";
 
 interface NavProps {
@@ -38,14 +41,14 @@ export default function Nav({ user }: NavProps) {
           to="/"
           aria-label="Home"
           title="Home"
-          icon={<HomeIcon />}
+          icon={<CommonIcon as={HomeOutline} />}
         />
 
         <Create>
           <IconButton
             aria-label="Create"
             title="Create"
-            icon={<PlusIcon />}
+            icon={<CommonIcon as={AddOutline} />}
             type="submit"
           />
         </Create>
@@ -55,7 +58,7 @@ export default function Nav({ user }: NavProps) {
             as={IconButton}
             aria-label="User"
             title="User"
-            icon={<UserIcon />}
+            icon={<CommonIcon as={PersonOutline} />}
           />
           <MenuList>
             {user ? (
@@ -78,7 +81,7 @@ export default function Nav({ user }: NavProps) {
           target="_blank"
           aria-label="GitHub"
           title="GitHub"
-          icon={<GitHubIcon />}
+          icon={<CommonIcon as={LogoGithub} />}
         />
 
         <IconButton
@@ -87,7 +90,7 @@ export default function Nav({ user }: NavProps) {
           target="_blank"
           aria-label="Twitter"
           title="Twitter"
-          icon={<TwitterIcon />}
+          icon={<CommonIcon as={LogoTwitter} />}
         />
       </Flex>
     </Flex>

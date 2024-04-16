@@ -1,12 +1,12 @@
 import * as React from "react";
 import type { SVGProps } from "react";
-const SvgDdr = (props: SVGProps<SVGSVGElement>) => (
+const SvgDdrRight = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlSpace="preserve"
-    width={65.567}
-    height={63.95}
-    viewBox="0 0 17.348 16.92"
+    width={63.95}
+    height={65.567}
+    viewBox="0 0 16.92 17.348"
     {...props}
   >
     <g
@@ -15,7 +15,7 @@ const SvgDdr = (props: SVGProps<SVGSVGElement>) => (
       }}
     >
       <path
-        d="M.265 8.731s-.183 1.059.905 2.117 2.005.794 2.005.794l2.91-2.91v5.026l2.382 2.382 2.38-2.382V8.731l2.911 2.91s.918.265 2.005-.793c1.088-1.058.906-2.117.906-2.117L8.467.53Z"
+        d="M8.07 16.536s-1.059.183-2.117-.905c-1.058-1.087-.794-2.005-.794-2.005l2.91-2.91H3.044L.66 8.334l2.382-2.38H8.07L5.16 3.042s-.265-.918.793-2.005C7.011-.05 8.07.132 8.07.132l8.202 8.202Z"
         style={{
           fontVariationSettings: "normal",
           display: "inline",
@@ -34,9 +34,9 @@ const SvgDdr = (props: SVGProps<SVGSVGElement>) => (
           stopColor: "#000",
           stopOpacity: 1,
         }}
-        transform="translate(.207 .126)"
+        transform="translate(-.007 .34)"
       />
     </g>
   </svg>
 );
-export default SvgDdr;
+export default SvgDdrRight;

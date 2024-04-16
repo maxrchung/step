@@ -9,7 +9,7 @@
     "typecheck": "tsc",
     "sst:deploy": "sst deploy",
     "sst:dev": "sst dev",
-    "icons": "npx @svgr/cli --out-dir app/icons/svg -- app/icons/svg",
+    "icons": "npx @svgr/cli --out-dir app/icons -- app/icons/svg",
     "icons:watch": "npm-watch icons",
     "dev:svg": "run-s icons icons:watch",
     "dev:remix": "sst bind remix dev",
@@ -27,7 +27,6 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.540.0",
     "@aws-sdk/lib-dynamodb": "^3.540.0",
-    "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.3",
     "@emotion/server": "^11.11.0",

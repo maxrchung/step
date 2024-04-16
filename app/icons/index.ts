@@ -1,1 +1,16 @@
-export { default as Path1 } from "./DdrUp";
+export { default as AddOutline } from "./AddOutline";
+export { default as BackspaceOutline } from "./BackspaceOutline";
+export { default as CheckmarkOutline } from "./CheckmarkOutline";
+export { default as CloseOutline } from "./CloseOutline";
+export { default as CreateOutline } from "./CreateOutline";
+export { default as DdrDown } from "./DdrDown";
+export { default as DdrLeft } from "./DdrLeft";
+export { default as DdrRight } from "./DdrRight";
+export { default as DdrUp } from "./DdrUp";
+export { default as HomeOutline } from "./HomeOutline";
+export { default as LinkOutline } from "./LinkOutline";
+export { default as LogoGithub } from "./LogoGithub";
+export { default as LogoGoogle } from "./LogoGoogle";
+export { default as LogoTwitter } from "./LogoTwitter";
+export { default as PersonOutline } from "./PersonOutline";
+export { default as TrashOutline } from "./TrashOutline";
