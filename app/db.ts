@@ -1,17 +1,9 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 import { Table } from "sst/node/table";
+import { Style, createEmptyStyle } from "./style";
 
 const db = DynamoDBDocument.from(new DynamoDBClient({}));
-
-export enum Style {
-  DDR_SINGLE = "DDR Single",
-  DDR_DOUBLE = "DDR Double",
-  PIU_SINGLE = "PIU Single",
-  PIU_DOUBLE = "PIU Double",
-  SMX_SINGLE = "SMX Single",
-  SMX_DOUBLE = "SMX Double",
-}
 
 interface Step {
   id: string;
@@ -39,7 +31,7 @@ export const createStep = (id: string, owner: string) => {
     // Probably not very locale aware since this is on server
     title: date.toLocaleString(),
     style: Style.DDR_SINGLE,
-    steps: [[], [], [], []],
+    steps: createEmptyStyle(Style.DDR_SINGLE),
     created: iso,
     updated: iso,
   };
@@ -122,7 +114,7 @@ export const updateStyle = (id: string, style: Style) => {
     ExpressionAttributeValues: {
       ":style": style,
       ":updated": updated,
-      ":steps": [[], [], [], []],
+      ":steps": createEmptyStyle(style),
     },
   });
 };

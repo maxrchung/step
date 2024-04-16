@@ -16,22 +16,19 @@ import { useFetcher, useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import invariant from "tiny-invariant";
 import { authenticator } from "~/auth/authenticator.server";
-import { Style, getStep } from "~/db";
+import { getStep } from "~/db";
 import Delete from "./$stepId.delete";
 import useInitial from "~/hooks/useInitial";
-import DdrUp from "~/icons/DdrUp";
 import CommonIcon from "~/icons/CommonIcon";
 import {
   BackspaceOutline,
   CloseOutline,
   CreateOutline,
-  DdrDown,
-  DdrLeft,
-  DdrRight,
   LinkOutline,
   TrashOutline,
 } from "~/icons";
 import StepIcon from "~/icons/StepIcon";
+import { STYLE_ICONS, Style, createEmptyStyle } from "~/style";
 
 const MAX_NOTES = 140;
 const DEBOUNCE_TIME = 1000;
@@ -62,7 +59,6 @@ export default function Step() {
   const editNameFetcher = useFetcher();
   const editStyleFetcher = useFetcher();
   const editStepsFetcher = useFetcher();
-  const clearAllFetcher = useFetcher();
   const isInitial = useInitial();
 
   useEffect(() => {
@@ -178,7 +174,7 @@ export default function Step() {
                   action: `/${step.id}/editstyle`,
                 });
                 setStyle(option);
-                setSteps([[], [], [], []]);
+                setSteps(createEmptyStyle(option));
               }
             }}
             value={style}
@@ -216,7 +212,7 @@ export default function Step() {
               );
 
               if (response) {
-                setSteps([[], [], [], []]);
+                setSteps(createEmptyStyle(step.style));
               }
             }}
           />
@@ -236,10 +232,15 @@ export default function Step() {
       </Flex>
 
       <Flex justify="center">
-        <Column data={steps} setData={setSteps} index={0} />
-        <Column data={steps} setData={setSteps} index={1} />
-        <Column data={steps} setData={setSteps} index={2} />
-        <Column data={steps} setData={setSteps} index={3} />
+        {STYLE_ICONS[style].map((_step, index) => (
+          <Column
+            key={index}
+            data={steps}
+            setData={setSteps}
+            index={index}
+            style={style}
+          />
+        ))}
       </Flex>
     </Flex>
   );
@@ -249,10 +250,12 @@ interface ColumnProps {
   data: number[][];
   setData: (data: number[][]) => void;
   index: number;
+  style: Style;
 }
 
-const Column = ({ data, setData, index }: ColumnProps) => {
+const Column = ({ data, setData, index, style }: ColumnProps) => {
   const column = data[index];
+  console.log(data);
 
   const setStep =
     (columnIndex: number, stepIndex: number) => (isShown: boolean) => {
@@ -279,6 +282,7 @@ const Column = ({ data, setData, index }: ColumnProps) => {
         columnIndex={index}
         setStep={setStep(index, i)}
         hasStep={hasNote}
+        style={style}
       />
     );
   }
@@ -294,12 +298,16 @@ interface StepButtonProps {
   columnIndex: number;
   setStep: (isShown: boolean) => void;
   hasStep: boolean;
+  style: Style;
 }
 
-const StepIcons = [DdrLeft, DdrDown, DdrUp, DdrRight];
-
-const StepButton = ({ columnIndex, setStep, hasStep }: StepButtonProps) => {
-  const { isOwner } = useLoaderData<typeof loader>();
+const StepButton = ({
+  columnIndex,
+  setStep,
+  hasStep,
+  style,
+}: StepButtonProps) => {
+  const { step, isOwner } = useLoaderData<typeof loader>();
   const [isHover, setIsHover] = useBoolean();
   const [isStepHover, setIsStepHover] = useBoolean();
   const shouldShowStep = hasStep || isHover;
@@ -324,7 +332,7 @@ const StepButton = ({ columnIndex, setStep, hasStep }: StepButtonProps) => {
       />
       {shouldShowStep && (
         <StepIcon
-          as={StepIcons[columnIndex]}
+          as={STYLE_ICONS[style][columnIndex]}
           pos="absolute"
           top="50%"
           transform="translateY(-50%)"
@@ -361,7 +369,7 @@ const StepButton = ({ columnIndex, setStep, hasStep }: StepButtonProps) => {
       />
       {shouldShowStep && (
         <StepIcon
-          as={StepIcons[columnIndex]}
+          as={STYLE_ICONS[step.style][columnIndex]}
           pos="absolute"
           top="50%"
           transform="translateY(-50%)"
