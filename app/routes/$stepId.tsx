@@ -339,6 +339,14 @@ const StepButton = ({
           h={8}
           onMouseEnter={setIsStepHover.on}
           onMouseLeave={setIsStepHover.off}
+          opacity={hasStep && isStepHover ? 0.5 : hasStep ? 1 : 0.5}
+          filter={
+            hasStep && isStepHover
+              ? undefined
+              : hasStep
+              ? undefined
+              : "grayscale(1)"
+          }
           color={
             hasStep && isStepHover
               ? "red.400"
