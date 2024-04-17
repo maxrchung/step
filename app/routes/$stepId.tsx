@@ -67,7 +67,6 @@ export default function Step() {
     }
 
     const timeout = setTimeout(() => {
-      console.log("steps", steps);
       editStepsFetcher.submit(
         { steps: steps },
         {
@@ -255,8 +254,6 @@ interface ColumnProps {
 
 const Column = ({ data, setData, index, style }: ColumnProps) => {
   const column = data[index];
-  console.log(data);
-
   const setStep =
     (columnIndex: number, stepIndex: number) => (isShown: boolean) => {
       data[columnIndex] = isShown
