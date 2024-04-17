@@ -8,6 +8,11 @@ import {
   PiuMiddle,
   PiuTopLeft,
   PiuTopRight,
+  SmxDown,
+  SmxLeft,
+  SmxMiddle,
+  SmxRight,
+  SmxUp,
 } from "./icons";
 
 export enum Style {
@@ -54,18 +59,18 @@ export const STYLE_ICONS: {
     PiuTopRight,
     PiuBottomRight,
   ],
-  [Style.SMX_SINGLE]: [DdrUp, DdrUp, DdrUp, DdrUp, DdrUp],
+  [Style.SMX_SINGLE]: [SmxLeft, SmxDown, SmxMiddle, SmxUp, SmxRight],
   [Style.SMX_DOUBLE]: [
-    DdrUp,
-    DdrUp,
-    DdrUp,
-    DdrUp,
-    DdrUp,
-    DdrUp,
-    DdrUp,
-    DdrUp,
-    DdrUp,
-    DdrUp,
+    SmxLeft,
+    SmxDown,
+    SmxMiddle,
+    SmxUp,
+    SmxRight,
+    SmxLeft,
+    SmxDown,
+    SmxMiddle,
+    SmxUp,
+    SmxRight,
   ],
 };
 
