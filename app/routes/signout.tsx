@@ -1,5 +1,13 @@
-import { redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { authenticator } from "~/auth/authenticator.server";
 import { commitSession, getSession } from "~/auth/session.server";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  if (!(await authenticator.isAuthenticated(request))) {
+    return redirect("/");
+  }
+  return null;
+}
 
 export const action = async () => {
   // Lol https://sergiodxa.com/tutorials/destroy-user-session-and-while-setting-a-flash-message-in-remix
