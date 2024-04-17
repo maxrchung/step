@@ -1,4 +1,14 @@
-import { DdrDown, DdrLeft, DdrRight, DdrUp } from "./icons";
+import {
+  DdrDown,
+  DdrLeft,
+  DdrRight,
+  DdrUp,
+  PiuBottomLeft,
+  PiuBottomRight,
+  PiuMiddle,
+  PiuTopLeft,
+  PiuTopRight,
+} from "./icons";
 
 export enum Style {
   DDR_SINGLE = "DDR Single",
@@ -25,18 +35,24 @@ export const STYLE_ICONS: {
     DdrUp,
     DdrRight,
   ],
-  [Style.PIU_SINGLE]: [DdrUp, DdrUp, DdrUp, DdrUp, DdrUp],
+  [Style.PIU_SINGLE]: [
+    PiuBottomLeft,
+    PiuTopLeft,
+    PiuMiddle,
+    PiuTopRight,
+    PiuBottomRight,
+  ],
   [Style.PIU_DOUBLE]: [
-    DdrUp,
-    DdrUp,
-    DdrUp,
-    DdrUp,
-    DdrUp,
-    DdrUp,
-    DdrUp,
-    DdrUp,
-    DdrUp,
-    DdrUp,
+    PiuBottomLeft,
+    PiuTopLeft,
+    PiuMiddle,
+    PiuTopRight,
+    PiuBottomRight,
+    PiuBottomLeft,
+    PiuTopLeft,
+    PiuMiddle,
+    PiuTopRight,
+    PiuBottomRight,
   ],
   [Style.SMX_SINGLE]: [DdrUp, DdrUp, DdrUp, DdrUp, DdrUp],
   [Style.SMX_DOUBLE]: [
