@@ -316,7 +316,7 @@ const StepButton = ({
       bg="gray.100"
       display="flex"
       justifyContent="center"
-      h="8"
+      h={8}
       onMouseEnter={setIsHover.on}
       onMouseLeave={setIsHover.off}
     >
@@ -335,8 +335,8 @@ const StepButton = ({
           transform="translateY(-50%)"
           zIndex={100}
           onClick={() => setStep(false)}
-          w={8}
-          h={8}
+          w={7}
+          h={7}
           onMouseEnter={setIsStepHover.on}
           onMouseLeave={setIsStepHover.off}
           opacity={hasStep && isStepHover ? 0.5 : hasStep ? 1 : 0.5}
@@ -363,7 +363,7 @@ const StepButton = ({
       bg="gray.100"
       display="flex"
       justifyContent="center"
-      h="8"
+      h={8}
     >
       <chakra.hr
         pos="absolute"
@@ -379,8 +379,8 @@ const StepButton = ({
           top="50%"
           transform="translateY(-50%)"
           zIndex={100}
-          w={10}
-          h={10}
+          w={7}
+          h={7}
           color="red.500"
         />
       )}
