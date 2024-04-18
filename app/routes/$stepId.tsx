@@ -335,8 +335,8 @@ const StepButton = ({
           transform="translateY(-50%)"
           zIndex={100}
           onClick={() => setStep(false)}
-          w={7}
-          h={7}
+          w={6}
+          h={6}
           onMouseEnter={setIsStepHover.on}
           onMouseLeave={setIsStepHover.off}
           opacity={hasStep && isStepHover ? 0.5 : hasStep ? 1 : 0.5}
@@ -379,8 +379,8 @@ const StepButton = ({
           top="50%"
           transform="translateY(-50%)"
           zIndex={100}
-          w={7}
-          h={7}
+          w={6}
+          h={6}
           color="red.500"
         />
       )}
