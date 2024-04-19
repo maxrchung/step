@@ -5,7 +5,7 @@ Check it out: https://step.maxrchung.com
 Note: Creating step charts requires a Google login.
 
 This project is a small web tool to help create step patterns for dance games
-(DanceDanceRevolution, Pump It Up, StepManiaX). I'm mostly using it to
+(Dance Dance Revolution, Pump It Up, StepManiaX). I'm mostly using it to
 personally make quick notes and practice certain parts of songs. Hope others may
 find it useful. 🐸
 
