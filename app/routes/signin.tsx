@@ -1,6 +1,7 @@
 import { Container, Flex, Heading, Text } from "@chakra-ui/react";
 import {
   ActionFunctionArgs,
+  MetaFunction,
   redirect,
   type LoaderFunctionArgs,
 } from "@remix-run/node";
@@ -20,6 +21,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {
   return await authenticator.authenticate("google", request);
 }
+
+export const meta: MetaFunction<typeof loader> = () => [
+  { title: "Sign-in - Step" },
+];
 
 export default function SignIn() {
   return (
