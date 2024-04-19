@@ -6,6 +6,7 @@ import {
   IconButton,
   Input,
   Select,
+  Spinner,
   chakra,
   useBoolean,
   useToast,
@@ -59,6 +60,7 @@ export default function Step() {
   const editNameFetcher = useFetcher();
   const editStyleFetcher = useFetcher();
   const editStepsFetcher = useFetcher();
+  const [isSyncing, setIsSyncing] = useState(false);
   const isInitial = useInitial();
 
   useEffect(() => {
@@ -75,7 +77,10 @@ export default function Step() {
           encType: "application/json",
         }
       );
+      setIsSyncing(false);
     }, DEBOUNCE_TIME);
+
+    setIsSyncing(true);
 
     return () => clearTimeout(timeout);
   }, [steps]);
@@ -241,6 +246,8 @@ export default function Step() {
           />
         ))}
       </Flex>
+
+      {isSyncing && <Spinner aria-label="Syncing" pos="fixed" bottom="5" />}
     </Flex>
   );
 }
