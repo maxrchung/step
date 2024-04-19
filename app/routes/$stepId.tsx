@@ -295,7 +295,7 @@ const Column = ({ data, setData, index, style }: ColumnProps) => {
   }
 
   return (
-    <Flex w={8} direction="column-reverse">
+    <Flex w={7} direction="column-reverse">
       {stepButtons}
     </Flex>
   );
@@ -326,7 +326,7 @@ const StepButton = ({
       bg="gray.100"
       display="flex"
       justifyContent="center"
-      h={8}
+      h={7}
       onMouseEnter={setIsHover.on}
       onMouseLeave={setIsHover.off}
     >
@@ -373,7 +373,7 @@ const StepButton = ({
       bg="gray.100"
       display="flex"
       justifyContent="center"
-      h={8}
+      h={7}
     >
       <chakra.hr
         pos="absolute"
