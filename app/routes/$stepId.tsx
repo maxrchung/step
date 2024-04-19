@@ -21,6 +21,7 @@ import useInitial from "~/hooks/useInitial";
 import CommonIcon from "~/icons/CommonIcon";
 import {
   BackspaceOutline,
+  CheckmarkOutline,
   CloseOutline,
   CreateOutline,
   LinkOutline,
