@@ -1,6 +1,5 @@
 import {
   Box,
-  CheckboxIcon,
   Container,
   Flex,
   Heading,
@@ -115,7 +114,7 @@ export default function Step() {
               <IconButton
                 aria-label="Confirm"
                 title="Confirm"
-                icon={<CommonIcon as={CheckboxIcon} />}
+                icon={<CommonIcon as={CheckmarkOutline} />}
                 variant="ghost"
                 type="submit"
                 isDisabled={editNameFetcher.state === "submitting"}
