@@ -14,8 +14,8 @@ export interface User {
 export const authenticator = new Authenticator<User>(sessionStorage);
 
 export const CALLBACK_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://step.maxrchung.com"
+  Config.STAGE === "prod"
+    ? "https://step.maxrchung.com/signin/callback"
     : "http://localhost:3000/signin/callback";
 
 authenticator.use(
