@@ -247,7 +247,10 @@ export default function Step() {
         ))}
       </Flex>
 
-      {isSyncing && <Spinner aria-label="Syncing" pos="fixed" bottom="5" />}
+      {
+        // Not sure if I want this or not, I think I'll remove it for now
+        // isSyncing && <Spinner aria-label="Syncing" pos="fixed" bottom="5" />
+      }
     </Flex>
   );
 }
