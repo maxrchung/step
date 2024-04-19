@@ -11,7 +11,7 @@ to make quick notes and practice certain parts of songs. Hope others may find it
 
 ## Tech
 
-This project uses TypeScript, React, Remix, Chakra UI and AWS. It uses SST to deploy dev and prod environments. Some icons are handmade, but the majority are from Ionicons.
+This project uses TypeScript, React, Remix, Chakra UI, and AWS. It uses SST to deploy dev and prod environments. Some icons are handmade, but the majority are from Ionicons.
 
 ## Dev
 
