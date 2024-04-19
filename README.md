@@ -1,3 +1,5 @@
+![image](https://github.com/maxrchung/step/assets/3955187/c19bc7ce-1072-40bd-beee-e0f6009ddd35)
+
 # Step
 
 Check it out: https://step.maxrchung.com
