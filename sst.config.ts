@@ -43,6 +43,13 @@ export default {
 
       const site = new RemixSite(stack, "site", {
         bind: [table, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, COOKIE_SECRET],
+        customDomain:
+          app.stage === "prod"
+            ? {
+                domainName: "step.maxrchung.com",
+                hostedZone: "maxrchung.com",
+              }
+            : undefined,
       });
 
       stack.addOutputs({

@@ -1,23 +1,27 @@
-# Chakra UI Example
+# Step
 
-In this setup we will setup Chakra UI with Remix.
+Try it out: https://step.maxrchung.com
 
-Please note that when adding Chakra UI to a TypeScript project, a minimum TypeScript version of `4.1.0` is required
+Note: Creating step charts requires a Google login.
 
-## Preview
+This project is a small web tool to help create step patterns for dance games
+(DanceDanceRevolution, Pump It Up, StepManiaX). I'm mostly using it personally
+to make quick notes and practice certain parts of songs. Hope others may find it useful. 🐸
 
-Open this example on [CodeSandbox](https://codesandbox.com):
 
-[![Open in CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/remix-run/examples/tree/main/chakra-ui)
+## Tech
 
-## Example
+This project uses TypeScript, React, Remix, Chakra UI and AWS. It uses SST to deploy dev and prod environments. Some icons are handmade, but the majority are from Ionicons.
 
-This example shows how to use Chakra UI with Remix.
+## Dev
 
-Check [app/root.tsx](./app/root.tsx) where Chakra UI is imported and provides context to the component tree.
+```
+npx sst dev
+npm run dev
+```
 
-Uncomment the thrown error on `./app/root.tsx` to see how Chackra UI handles your styles graciously on `CatchBoundary`. Then, navigate a **Not Found** route (like `/admin`) to see `ErrorBoundary` in action.
+## Deploy
 
-## Related Links
-
-[Chakra UI](https://chakra-ui.com/guides/getting-started/remix-guide)
+```
+npx sst deploy --stage prod
+```
