@@ -35,19 +35,26 @@ const MAX_NOTES = 140;
 const DEBOUNCE_TIME = 1000;
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-  invariant(params.stepId, "Step ID is missing.");
+  if (!params.stepId) {
+    throw new Response(null, { status: 404, statusText: "Not Found" });
+  }
 
   const user = (await authenticator.isAuthenticated(request)) || undefined;
   const step = await getStep(params.stepId);
 
-  invariant(step, `We failed to load Step with ID ${params.stepId}.`);
+  if (!step) {
+    throw new Response(null, { status: 404, statusText: "Not Found" });
+  }
+
   const isOwner = user?.id === step.owner;
 
   return json({ step, isOwner });
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return [{ title: data?.step.title ? `${data?.step.title} - Step` : "Step" }];
+  return [
+    { title: data?.step?.title ? `${data?.step?.title} - Step` : "Step" },
+  ];
 };
 
 export default function Step() {
