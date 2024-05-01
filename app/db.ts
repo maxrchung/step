@@ -22,18 +22,20 @@ interface OwnerStep {
   created: string;
 }
 
-export const createStep = (id: string, owner: string) => {
-  const date = new Date();
-  const iso = date.toISOString();
+export const createStep = (
+  id: string,
+  owner: string,
+  title: string,
+  date: string
+) => {
   const item: Step = {
     id,
     owner,
-    // Probably not very locale aware since this is on server
-    title: date.toLocaleString(),
+    title,
     style: Style.DDR_SINGLE,
     steps: createEmptyStyle(Style.DDR_SINGLE),
-    created: iso,
-    updated: iso,
+    created: date,
+    updated: date,
   };
 
   return db.put({
