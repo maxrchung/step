@@ -20,7 +20,12 @@ This project uses TypeScript, React, Remix, Chakra UI, Ionicons, SST, and AWS.
 
 ```
 npx sst dev
-npm run dev
+
+# The combined dev script seems to have some issues, but you can run the dev commands individually
+# npx dev
+
+npm run icons
+npm run dev:remix
 ```
 
 ## Deploy
