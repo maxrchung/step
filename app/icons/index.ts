@@ -18,6 +18,7 @@ export { default as PiuBottomRight } from "./PiuBottomRight";
 export { default as PiuMiddle } from "./PiuMiddle";
 export { default as PiuTopLeft } from "./PiuTopLeft";
 export { default as PiuTopRight } from "./PiuTopRight";
+export { default as RemoveOutline } from "./RemoveOutline";
 export { default as SmxDown } from "./SmxDown";
 export { default as SmxLeft } from "./SmxLeft";
 export { default as SmxMiddle } from "./SmxMiddle";

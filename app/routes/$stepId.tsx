@@ -5,6 +5,11 @@ import {
   Heading,
   IconButton,
   Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
   Select,
   chakra,
   useBoolean,
@@ -193,6 +198,22 @@ export default function Step() {
               <option key={style}>{style}</option>
             ))}
           </Select>
+        )}
+
+        {isOwner && (
+          <NumberInput value={3} mr={2} inputMode="numeric">
+            <NumberInputField w={20} />
+            <NumberInputStepper>
+              <NumberIncrementStepper
+                aria-label="Increase spacing"
+                title="Increase spacing"
+              />
+              <NumberDecrementStepper
+                aria-label="Decrease spacing"
+                title="Decrease spacing"
+              />
+            </NumberInputStepper>
+          </NumberInput>
         )}
 
         <IconButton
