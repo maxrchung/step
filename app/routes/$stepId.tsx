@@ -67,11 +67,10 @@ export default function Step() {
   const [isEdit, setIsEdit] = useState(false);
   const [title, setTitle] = useState(step.title);
   const toast = useToast();
-  const editNameFetcher = useFetcher();
-  const editStyleFetcher = useFetcher();
-  const editStepsFetcher = useFetcher();
+  const editFetcher = useFetcher();
   const [isSyncing, setIsSyncing] = useState(false);
   const isInitial = useInitial();
+  const [spacing, setSpacing] = useState(step.spacing ?? 28);
 
   useEffect(() => {
     if (!isOwner || isInitial) {
@@ -79,7 +78,7 @@ export default function Step() {
     }
 
     const timeout = setTimeout(() => {
-      editStepsFetcher.submit(
+      editFetcher.submit(
         { steps: steps },
         {
           action: `/${step.id}/editsteps`,
@@ -95,11 +94,31 @@ export default function Step() {
     return () => clearTimeout(timeout);
   }, [steps]);
 
+  // Using the stepper, you can make a lot of spacing changes quickly which can
+  // be annoying to show so many toast notifications. Probably a good idea to
+  // debounce it like this so there aren't so many updates.
   useEffect(() => {
-    if (editNameFetcher.data) {
+    if (!isOwner || isInitial) {
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      const formData = new FormData();
+      formData.set("spacing", spacing.toString());
+      editFetcher.submit(formData, {
+        method: "post",
+        action: `/${step.id}/editspacing`,
+      });
+    }, DEBOUNCE_TIME);
+
+    return () => clearTimeout(timeout);
+  }, [spacing]);
+
+  useEffect(() => {
+    if (editFetcher.data) {
       setIsEdit(false);
     }
-  }, [editNameFetcher.data]);
+  }, [editFetcher.data]);
 
   return (
     <Flex flexDir="column" gap="5" align="center">
@@ -109,7 +128,7 @@ export default function Step() {
             gap="2"
             align="center"
             width="100%"
-            as={editNameFetcher.Form}
+            as={editFetcher.Form}
             action={`/${step.id}/editname`}
             method="patch"
             onSubmit={(event) => {
@@ -133,7 +152,7 @@ export default function Step() {
                 icon={<CommonIcon as={CheckmarkOutline} />}
                 variant="ghost"
                 type="submit"
-                isDisabled={editNameFetcher.state === "submitting"}
+                isDisabled={editFetcher.state === "submitting"}
               />
 
               <IconButton
@@ -183,7 +202,7 @@ export default function Step() {
               if (response) {
                 const formData = new FormData();
                 formData.set("style", option);
-                editStyleFetcher.submit(formData, {
+                editFetcher.submit(formData, {
                   method: "post",
                   action: `/${step.id}/editstyle`,
                 });
@@ -201,7 +220,15 @@ export default function Step() {
         )}
 
         {isOwner && (
-          <NumberInput value={3} mr={2} inputMode="numeric">
+          <NumberInput
+            onChange={(value) => {
+              setSpacing(Number(value));
+            }}
+            value={spacing}
+            mr={2}
+            inputMode="numeric"
+            min={0}
+          >
             <NumberInputField w={20} />
             <NumberInputStepper>
               <NumberIncrementStepper
@@ -269,6 +296,7 @@ export default function Step() {
             setData={setSteps}
             index={index}
             style={style}
+            spacing={spacing}
           />
         ))}
       </Flex>
@@ -286,9 +314,10 @@ interface ColumnProps {
   setData: (data: number[][]) => void;
   index: number;
   style: Style;
+  spacing: number;
 }
 
-const Column = ({ data, setData, index, style }: ColumnProps) => {
+const Column = ({ data, setData, index, style, spacing }: ColumnProps) => {
   const column = data[index];
   const setStep =
     (columnIndex: number, stepIndex: number) => (isShown: boolean) => {
@@ -316,6 +345,7 @@ const Column = ({ data, setData, index, style }: ColumnProps) => {
         setStep={setStep(index, i)}
         hasStep={hasNote}
         style={style}
+        spacing={spacing}
       />
     );
   }
@@ -332,6 +362,7 @@ interface StepButtonProps {
   setStep: (isShown: boolean) => void;
   hasStep: boolean;
   style: Style;
+  spacing: number;
 }
 
 const StepButton = ({
@@ -339,6 +370,7 @@ const StepButton = ({
   setStep,
   hasStep,
   style,
+  spacing,
 }: StepButtonProps) => {
   const { step, isOwner } = useLoaderData<typeof loader>();
   const [isHover, setIsHover] = useBoolean();
@@ -352,7 +384,7 @@ const StepButton = ({
       bg="gray.100"
       display="flex"
       justifyContent="center"
-      h={7}
+      h={`${spacing}px`}
       onMouseEnter={setIsHover.on}
       onMouseLeave={setIsHover.off}
     >

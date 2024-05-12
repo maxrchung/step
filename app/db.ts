@@ -13,6 +13,9 @@ interface Step {
   owner: string;
   created: string;
   updated: string;
+
+  // Height of each step
+  spacing?: number;
 }
 
 interface OwnerStep {
@@ -117,6 +120,19 @@ export const updateStyle = (id: string, style: Style) => {
       ":style": style,
       ":updated": updated,
       ":steps": createEmptyStyle(style),
+    },
+  });
+};
+
+export const updateSpacing = (id: string, spacing: number) => {
+  const updated = new Date().toISOString();
+  return db.update({
+    TableName: Table.steps.tableName,
+    Key: { id },
+    UpdateExpression: "set spacing = :spacing, updated = :updated",
+    ExpressionAttributeValues: {
+      ":spacing": spacing,
+      ":updated": updated,
     },
   });
 };
