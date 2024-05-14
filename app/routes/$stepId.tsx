@@ -30,6 +30,7 @@ import {
 } from "~/icons";
 import { STYLE_ICONS, Style, createEmptyStyle } from "~/style";
 import { StepColumn } from "~/components/StepColumn";
+import { StepContext } from "~/components/StepContext";
 
 const DEBOUNCE_TIME = 1000;
 
@@ -248,7 +249,7 @@ export default function Step() {
           onClick={() => {
             navigator.clipboard.writeText(location.href);
             toast({
-              description: "Link copied to clipboard.",
+              description: "You copied the link to clipboard.",
               status: "success",
             });
           }}
@@ -290,18 +291,20 @@ export default function Step() {
       </Flex>
 
       <Flex justify="center">
-        {STYLE_ICONS[style].map((_step, index) => (
-          <StepColumn
-            key={index}
-            data={steps}
-            setData={setSteps}
-            index={index}
-            style={style}
-            spacing={spacing}
-            rowHoverIndex={rowHoverIndex}
-            setRowHoverIndex={setRowHoverIndex}
-          />
-        ))}
+        <StepContext.Provider
+          value={{
+            steps,
+            setSteps,
+            style,
+            spacing,
+            rowHoverIndex,
+            setRowHoverIndex,
+          }}
+        >
+          {STYLE_ICONS[style].map((_step, index) => (
+            <StepColumn key={index} columnIndex={index} />
+          ))}
+        </StepContext.Provider>
       </Flex>
 
       {
