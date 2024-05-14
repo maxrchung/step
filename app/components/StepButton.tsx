@@ -4,6 +4,7 @@ import {
   Box,
   IconButton,
   ButtonGroup,
+  useToast,
 } from "@chakra-ui/react";
 import { useLoaderData } from "@remix-run/react";
 import { AddOutline, TrashOutline } from "~/icons";
@@ -11,6 +12,7 @@ import CommonIcon from "~/icons/CommonIcon";
 import StepIcon from "~/icons/StepIcon";
 import { loader } from "~/routes/$stepId";
 import { Style, STYLE_ICONS } from "~/style";
+import { MAX_STEPS } from "./Column";
 
 interface StepButtonProps {
   columnIndex: number;
@@ -42,6 +44,7 @@ export const StepButton = ({
   const [isStepHover, setIsStepHover] = useBoolean();
   const shouldShowStep = hasStep || isHover;
   const isLast = columnIndex === STYLE_ICONS[style].length - 1;
+  const toast = useToast();
 
   return isOwner ? (
     <chakra.button
@@ -105,6 +108,9 @@ export const StepButton = ({
           top="50%"
           transform="translateY(-50%)"
           pl="1"
+          // Add some extra padding so selection doesn't need to be too precise
+          pr="5"
+          py="5"
           spacing={0}
         >
           <IconButton
@@ -112,7 +118,21 @@ export const StepButton = ({
             title="Add line"
             icon={<CommonIcon as={AddOutline} />}
             onClick={(event) => {
-              console.log("Add line");
+              for (const column of data) {
+                const last = column[column.length - 1];
+                if (last >= MAX_STEPS - 1) {
+                  toast({
+                    description: `We failed to add a line. Steps are limited to ${MAX_STEPS} lines.`,
+                    status: "error",
+                  });
+                  return;
+                }
+              }
+              setData(
+                data.map((column) =>
+                  column.map((step) => (step < rowIndex ? step : step + 1))
+                )
+              );
               event.stopPropagation();
             }}
           />
@@ -121,24 +141,17 @@ export const StepButton = ({
             title="Delete line"
             icon={<CommonIcon as={TrashOutline} />}
             onClick={(event) => {
-              const copy = data.map((column) =>
-                column.flatMap((step) => {
-                  if (step < rowIndex) {
-                    return [step];
-                  }
-
-                  if (step === rowIndex) {
-                    return [];
-                  }
-
-                  if (step > rowIndex) {
-                    return [step - 1];
-                  }
-
-                  return [];
-                })
+              setData(
+                data.map((column) =>
+                  column.flatMap((step) =>
+                    step < rowIndex
+                      ? [step]
+                      : step === rowIndex
+                      ? []
+                      : [step - 1]
+                  )
+                )
               );
-              setData(copy);
               event.stopPropagation();
             }}
           />
