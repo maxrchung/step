@@ -30,7 +30,7 @@ import {
 } from "~/icons";
 import { STYLE_ICONS, Style, createEmptyStyle } from "~/style";
 import { StepColumn } from "~/components/StepColumn";
-import { StepContext } from "~/components/StepContext";
+import { DEFAULT_STEP_CONTEXT, StepContext } from "~/components/StepContext";
 
 const DEBOUNCE_TIME = 1000;
 
@@ -67,8 +67,12 @@ export default function Step() {
   const editFetcher = useFetcher();
   const [isSyncing, setIsSyncing] = useState(false);
   const isInitial = useInitial();
-  const [spacing, setSpacing] = useState(step.spacing ?? 28);
-  const [rowHoverIndex, setRowHoverIndex] = useState(-1);
+  const [spacing, setSpacing] = useState(
+    step.spacing ?? DEFAULT_STEP_CONTEXT.spacing
+  );
+  const [rowHoverIndex, setRowHoverIndex] = useState(
+    DEFAULT_STEP_CONTEXT.rowHoverIndex
+  );
 
   useEffect(() => {
     if (!isOwner || isInitial) {
