@@ -12,7 +12,7 @@ import CommonIcon from "~/icons/CommonIcon";
 import StepIcon from "~/icons/StepIcon";
 import { loader } from "~/routes/$stepId";
 import { Style, STYLE_ICONS } from "~/style";
-import { MAX_STEPS } from "./Column";
+import { MAX_STEPS } from "./StepColumn";
 
 interface StepButtonProps {
   columnIndex: number;

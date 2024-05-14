@@ -4,7 +4,7 @@ import { StepButton } from "./StepButton";
 
 export const MAX_STEPS = 140;
 
-interface ColumnProps {
+interface StepColumnProps {
   data: number[][];
   setData: (data: number[][]) => void;
   index: number;
@@ -14,7 +14,7 @@ interface ColumnProps {
   setRowHoverIndex: (index: number) => void;
 }
 
-export const Column = ({
+export const StepColumn = ({
   data,
   setData,
   index,
@@ -22,7 +22,7 @@ export const Column = ({
   spacing,
   rowHoverIndex,
   setRowHoverIndex,
-}: ColumnProps) => {
+}: StepColumnProps) => {
   const column = data[index];
   const setStep =
     (columnIndex: number, stepIndex: number) => (isShown: boolean) => {

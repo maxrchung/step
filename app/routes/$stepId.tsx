@@ -29,7 +29,7 @@ import {
   TrashOutline,
 } from "~/icons";
 import { STYLE_ICONS, Style, createEmptyStyle } from "~/style";
-import { Column } from "~/components/Column";
+import { StepColumn } from "~/components/StepColumn";
 
 const DEBOUNCE_TIME = 1000;
 
@@ -291,7 +291,7 @@ export default function Step() {
 
       <Flex justify="center">
         {STYLE_ICONS[style].map((_step, index) => (
-          <Column
+          <StepColumn
             key={index}
             data={steps}
             setData={setSteps}
