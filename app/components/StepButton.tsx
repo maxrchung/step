@@ -21,6 +21,8 @@ interface StepButtonProps {
   rowIndex: number;
   rowHoverIndex: number;
   setRowHoverIndex: (index: number) => void;
+  data: number[][];
+  setData: (data: number[][]) => void;
 }
 
 export const StepButton = ({
@@ -32,8 +34,10 @@ export const StepButton = ({
   rowIndex,
   rowHoverIndex,
   setRowHoverIndex,
+  data,
+  setData,
 }: StepButtonProps) => {
-  const { step, isOwner } = useLoaderData<typeof loader>();
+  const { isOwner } = useLoaderData<typeof loader>();
   const [isHover, setIsHover] = useBoolean();
   const [isStepHover, setIsStepHover] = useBoolean();
   const shouldShowStep = hasStep || isHover;
@@ -107,16 +111,35 @@ export const StepButton = ({
             aria-label="Add line"
             title="Add line"
             icon={<CommonIcon as={AddOutline} />}
-            onClick={() => {
+            onClick={(event) => {
               console.log("Add line");
+              event.stopPropagation();
             }}
           />
           <IconButton
             aria-label="Delete line"
             title="Delete line"
             icon={<CommonIcon as={TrashOutline} />}
-            onClick={() => {
-              console.log("Delete line");
+            onClick={(event) => {
+              const copy = data.map((column) =>
+                column.flatMap((step) => {
+                  if (step < rowIndex) {
+                    return [step];
+                  }
+
+                  if (step === rowIndex) {
+                    return [];
+                  }
+
+                  if (step > rowIndex) {
+                    return [step - 1];
+                  }
+
+                  return [];
+                })
+              );
+              setData(copy);
+              event.stopPropagation();
             }}
           />
         </ButtonGroup>
@@ -139,7 +162,7 @@ export const StepButton = ({
       />
       {shouldShowStep && (
         <StepIcon
-          as={STYLE_ICONS[step.style][columnIndex]}
+          as={STYLE_ICONS[style][columnIndex]}
           pos="absolute"
           top="50%"
           transform="translateY(-50%)"

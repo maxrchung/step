@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import { Style } from "~/style";
 import { StepButton } from "./StepButton";
 
-const MAX_NOTES = 140;
+const DEFAULT_NOTES = 140;
 
 interface ColumnProps {
   data: number[][];
@@ -37,7 +37,7 @@ export const Column = ({
   let stepIndex = column.length - 1;
   const stepButtons = [];
 
-  for (let i = MAX_NOTES; i >= 0; --i) {
+  for (let i = DEFAULT_NOTES - 1; i >= 0; --i) {
     const hasNote = column[stepIndex] === i;
     if (hasNote) {
       --stepIndex;
@@ -54,6 +54,8 @@ export const Column = ({
         rowIndex={i}
         rowHoverIndex={rowHoverIndex}
         setRowHoverIndex={setRowHoverIndex}
+        data={data}
+        setData={setData}
       />
     );
   }
