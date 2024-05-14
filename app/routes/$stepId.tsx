@@ -267,6 +267,10 @@ export default function Step() {
 
               if (response) {
                 setSteps(createEmptyStyle(step.style));
+                toast({
+                  description: "You cleared all the steps.",
+                  status: "success",
+                });
               }
             }}
           />
