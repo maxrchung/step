@@ -1,5 +1,13 @@
-import { useBoolean, chakra, Box } from "@chakra-ui/react";
+import {
+  useBoolean,
+  chakra,
+  Box,
+  IconButton,
+  ButtonGroup,
+} from "@chakra-ui/react";
 import { useLoaderData } from "@remix-run/react";
+import { AddOutline, TrashOutline } from "~/icons";
+import CommonIcon from "~/icons/CommonIcon";
 import StepIcon from "~/icons/StepIcon";
 import { loader } from "~/routes/$stepId";
 import { Style, STYLE_ICONS } from "~/style";
@@ -10,6 +18,9 @@ interface StepButtonProps {
   hasStep: boolean;
   style: Style;
   spacing: number;
+  rowIndex: number;
+  rowHoverIndex: number;
+  setRowHoverIndex: (index: number) => void;
 }
 
 export const StepButton = ({
@@ -18,11 +29,15 @@ export const StepButton = ({
   hasStep,
   style,
   spacing,
+  rowIndex,
+  rowHoverIndex,
+  setRowHoverIndex,
 }: StepButtonProps) => {
   const { step, isOwner } = useLoaderData<typeof loader>();
   const [isHover, setIsHover] = useBoolean();
   const [isStepHover, setIsStepHover] = useBoolean();
   const shouldShowStep = hasStep || isHover;
+  const isLast = columnIndex === STYLE_ICONS[style].length - 1;
 
   return isOwner ? (
     <chakra.button
@@ -32,8 +47,14 @@ export const StepButton = ({
       display="flex"
       justifyContent="center"
       h={`${spacing}px`}
-      onMouseEnter={setIsHover.on}
-      onMouseLeave={setIsHover.off}
+      onMouseEnter={() => {
+        setIsHover.on();
+        setRowHoverIndex(rowIndex);
+      }}
+      onMouseLeave={() => {
+        setIsHover.off();
+        setRowHoverIndex(-1);
+      }}
     >
       <chakra.hr
         pos="absolute"
@@ -70,6 +91,35 @@ export const StepButton = ({
               : "gray.300"
           }
         />
+      )}
+      {rowHoverIndex === rowIndex && isLast && (
+        <ButtonGroup
+          size="xs"
+          variant="ghost"
+          pos="absolute"
+          left="100%"
+          top="50%"
+          transform="translateY(-50%)"
+          pl="1"
+          spacing={0}
+        >
+          <IconButton
+            aria-label="Add line"
+            title="Add line"
+            icon={<CommonIcon as={AddOutline} />}
+            onClick={() => {
+              console.log("Add line");
+            }}
+          />
+          <IconButton
+            aria-label="Delete line"
+            title="Delete line"
+            icon={<CommonIcon as={TrashOutline} />}
+            onClick={() => {
+              console.log("Delete line");
+            }}
+          />
+        </ButtonGroup>
       )}
     </chakra.button>
   ) : (

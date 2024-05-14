@@ -10,6 +10,8 @@ interface ColumnProps {
   index: number;
   style: Style;
   spacing: number;
+  rowHoverIndex: number;
+  setRowHoverIndex: (index: number) => void;
 }
 
 export const Column = ({
@@ -18,6 +20,8 @@ export const Column = ({
   index,
   style,
   spacing,
+  rowHoverIndex,
+  setRowHoverIndex,
 }: ColumnProps) => {
   const column = data[index];
   const setStep =
@@ -47,6 +51,9 @@ export const Column = ({
         hasStep={hasNote}
         style={style}
         spacing={spacing}
+        rowIndex={i}
+        rowHoverIndex={rowHoverIndex}
+        setRowHoverIndex={setRowHoverIndex}
       />
     );
   }

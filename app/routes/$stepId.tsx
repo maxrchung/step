@@ -67,6 +67,7 @@ export default function Step() {
   const [isSyncing, setIsSyncing] = useState(false);
   const isInitial = useInitial();
   const [spacing, setSpacing] = useState(step.spacing ?? 28);
+  const [rowHoverIndex, setRowHoverIndex] = useState(-1);
 
   useEffect(() => {
     if (!isOwner || isInitial) {
@@ -293,6 +294,8 @@ export default function Step() {
             index={index}
             style={style}
             spacing={spacing}
+            rowHoverIndex={rowHoverIndex}
+            setRowHoverIndex={setRowHoverIndex}
           />
         ))}
       </Flex>
