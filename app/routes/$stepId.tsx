@@ -29,8 +29,8 @@ import {
   TrashOutline,
 } from "~/icons";
 import { STYLE_ICONS, Style, createEmptyStyle } from "~/style";
-import { StepColumn } from "~/components/StepColumn";
-import { DEFAULT_STEP_CONTEXT, StepContext } from "~/components/StepContext";
+import { StepRows } from "~/components/StepRows";
+import { INITIAL_STEP_CONTEXT, StepContext } from "~/components/StepContext";
 
 const DEBOUNCE_TIME = 1000;
 
@@ -68,10 +68,7 @@ export default function Step() {
   const [isSyncing, setIsSyncing] = useState(false);
   const isInitial = useInitial();
   const [spacing, setSpacing] = useState(
-    step.spacing ?? DEFAULT_STEP_CONTEXT.spacing
-  );
-  const [rowHoverIndex, setRowHoverIndex] = useState(
-    DEFAULT_STEP_CONTEXT.rowHoverIndex
+    step.spacing ?? INITIAL_STEP_CONTEXT.spacing
   );
 
   useEffect(() => {
@@ -301,13 +298,9 @@ export default function Step() {
             setSteps,
             style,
             spacing,
-            rowHoverIndex,
-            setRowHoverIndex,
           }}
         >
-          {STYLE_ICONS[style].map((_step, index) => (
-            <StepColumn key={index} columnIndex={index} />
-          ))}
+          <StepRows />
         </StepContext.Provider>
       </Flex>
 
