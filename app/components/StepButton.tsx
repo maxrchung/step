@@ -20,7 +20,6 @@ export const StepButton = ({
 
   const { isOwner } = useLoaderData<typeof loader>();
   const [isHover, setIsHover] = useBoolean();
-  const shouldShowStep = hasStep || isHover;
 
   const toggleStep = () => {
     steps[columnIndex] = hasStep
@@ -51,7 +50,7 @@ export const StepButton = ({
           transform="translateY(-50%)"
           borderColor="gray.300"
         />
-        {shouldShowStep && (
+        {hasStep && (
           <StepIcon
             as={STYLE_ICONS[style][columnIndex]}
             pos="absolute"
@@ -60,7 +59,6 @@ export const StepButton = ({
             zIndex={100}
             w={6}
             h={6}
-            color="red.500"
           />
         )}
       </Box>
@@ -86,7 +84,7 @@ export const StepButton = ({
         transform="translateY(-50%)"
         borderColor="gray.300"
       />
-      {shouldShowStep && (
+      {hasStep && (
         <StepIcon
           as={STYLE_ICONS[style][columnIndex]}
           pos="absolute"
@@ -96,7 +94,6 @@ export const StepButton = ({
           onClick={toggleStep}
           w={6}
           h={6}
-          opacity={hasStep && isHover ? 0.5 : hasStep ? 1 : 0.5}
           filter={
             hasStep && isHover
               ? undefined
@@ -104,9 +101,27 @@ export const StepButton = ({
               ? undefined
               : "grayscale(1)"
           }
-          color={
-            hasStep && isHover ? "red.400" : hasStep ? "red.500" : "gray.300"
+        />
+      )}
+
+      {/* Overlay with another icon to apply hover effect. We don't want the original to be transparent. */}
+      {isHover && (
+        <StepIcon
+          as={STYLE_ICONS[style][columnIndex]}
+          pos="absolute"
+          top="50%"
+          transform="translateY(-50%)"
+          zIndex={100}
+          onClick={toggleStep}
+          w={6}
+          h={6}
+          filter={
+            hasStep
+              ? // Turn to black then invert to white
+                "brightness(0) invert(1)"
+              : "grayscale(1) brightness(0) invert(1)"
           }
+          opacity="50%"
         />
       )}
     </chakra.button>
