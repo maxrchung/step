@@ -29,6 +29,9 @@ export const StepButton = ({
       : // Add step
         [...steps[columnIndex], rowIndex].sort((a, b) => a - b);
     setSteps([...steps]);
+
+    // Handle mobile hover
+    setIsHover.off();
   };
 
   if (!isOwner) {
