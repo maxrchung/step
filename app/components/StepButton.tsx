@@ -84,7 +84,7 @@ export const StepButton = ({
         transform="translateY(-50%)"
         borderColor="gray.300"
       />
-      {hasStep && (
+      {(hasStep || isHover) && (
         <StepIcon
           as={STYLE_ICONS[style][columnIndex]}
           pos="absolute"
@@ -104,7 +104,7 @@ export const StepButton = ({
         />
       )}
 
-      {/* Overlay with another icon to apply hover effect. We don't want the original to be transparent. */}
+      {/* Overlay with another icon to apply hover effect. We don't want the step to be transparent. */}
       {isHover && (
         <StepIcon
           as={STYLE_ICONS[style][columnIndex]}
