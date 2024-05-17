@@ -28,7 +28,7 @@ import {
   LinkOutline,
   TrashOutline,
 } from "~/icons";
-import { STYLE_ICONS, Style, createEmptyStyle } from "~/style";
+import { Style, createEmptyStyle } from "~/style";
 import { StepRows } from "~/components/StepRows";
 import { INITIAL_STEP_CONTEXT, StepContext } from "~/components/StepContext";
 
@@ -120,7 +120,13 @@ export default function Step() {
   }, [editFetcher.data]);
 
   return (
-    <Flex flexDir="column" gap="5" align="center">
+    <Flex
+      flexDir="column"
+      gap="5"
+      align="center"
+      // Add spacing matching gap at end so it isn't flush
+      mb="5"
+    >
       <Container centerContent>
         {isEdit ? (
           <Flex
