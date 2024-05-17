@@ -325,3 +325,10 @@ export default function Step() {
     </Flex>
   );
 }
+
+// By default, whenever a edit is made to say editsteps, this route's loader
+// will be called and reload data. This refetches the step from ddb which is
+// probably not ideal. We are doing optimistic updates so there's no need to
+// refetch after every edit.
+// https://remix.run/docs/en/main/route/should-revalidate
+export const shouldRevalidate = () => false;
