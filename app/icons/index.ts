@@ -1,6 +1,8 @@
 export { default as AddOutline } from "./AddOutline";
 export { default as BackspaceOutline } from "./BackspaceOutline";
 export { default as CheckmarkOutline } from "./CheckmarkOutline";
+export { default as ChevronBackOutline } from "./ChevronBackOutline";
+export { default as ChevronForwardOutline } from "./ChevronForwardOutline";
 export { default as CloseOutline } from "./CloseOutline";
 export { default as CreateOutline } from "./CreateOutline";
 export { default as DdrDown } from "./DdrDown";
