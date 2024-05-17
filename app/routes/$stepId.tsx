@@ -178,7 +178,7 @@ export default function Step() {
               {title}
             </Heading>
 
-            {isOwner && (
+            {isOwner ? (
               <IconButton
                 aria-label="Edit name"
                 title="Edit name"
@@ -186,13 +186,27 @@ export default function Step() {
                 variant="ghost"
                 onClick={() => setIsEdit(true)}
               />
+            ) : (
+              <IconButton
+                aria-label="Copy link"
+                title="Copy link"
+                icon={<CommonIcon as={LinkOutline} />}
+                variant="ghost"
+                onClick={() => {
+                  navigator.clipboard.writeText(location.href);
+                  toast({
+                    description: "Link copied to clipboard.",
+                    status: "success",
+                  });
+                }}
+              />
             )}
           </Flex>
         )}
       </Container>
 
-      <Flex>
-        {isOwner && (
+      {isOwner && (
+        <Flex>
           <Select
             isDisabled={!isOwner}
             onChange={(event) => {
@@ -222,9 +236,7 @@ export default function Step() {
               <option key={style}>{style}</option>
             ))}
           </Select>
-        )}
 
-        {isOwner && (
           <NumberInput
             onChange={(value) => {
               setSpacing(Number(value));
@@ -246,23 +258,21 @@ export default function Step() {
               />
             </NumberInputStepper>
           </NumberInput>
-        )}
 
-        <IconButton
-          aria-label="Copy link"
-          title="Copy link"
-          icon={<CommonIcon as={LinkOutline} />}
-          variant="ghost"
-          onClick={() => {
-            navigator.clipboard.writeText(location.href);
-            toast({
-              description: "You copied the link to clipboard.",
-              status: "success",
-            });
-          }}
-        />
+          <IconButton
+            aria-label="Copy link"
+            title="Copy link"
+            icon={<CommonIcon as={LinkOutline} />}
+            variant="ghost"
+            onClick={() => {
+              navigator.clipboard.writeText(location.href);
+              toast({
+                description: "Link copied to clipboard.",
+                status: "success",
+              });
+            }}
+          />
 
-        {isOwner && (
           <IconButton
             aria-label="Clear all"
             title="Clear all"
@@ -282,9 +292,7 @@ export default function Step() {
               }
             }}
           />
-        )}
 
-        {isOwner && (
           <Delete id={step.id} title={step.title}>
             <IconButton
               aria-label="Delete"
@@ -294,8 +302,8 @@ export default function Step() {
               type="submit"
             />
           </Delete>
-        )}
-      </Flex>
+        </Flex>
+      )}
 
       <Flex justify="center">
         <StepContext.Provider
