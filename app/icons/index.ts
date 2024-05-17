@@ -9,6 +9,7 @@ export { default as DdrDown } from "./DdrDown";
 export { default as DdrLeft } from "./DdrLeft";
 export { default as DdrRight } from "./DdrRight";
 export { default as DdrUp } from "./DdrUp";
+export { default as Ellipse } from "./Ellipse";
 export { default as HomeOutline } from "./HomeOutline";
 export { default as LinkOutline } from "./LinkOutline";
 export { default as LogoGithub } from "./LogoGithub";
