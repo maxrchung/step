@@ -3,7 +3,7 @@ import { useStepContext } from "./StepContext";
 import { STYLE_ICONS } from "~/style";
 import { StepRow } from "./StepRow";
 
-export const MAX_STEPS = 140;
+export const MAX_STEPS = 200;
 
 export const StepRows = () => {
   const { steps, style } = useStepContext();

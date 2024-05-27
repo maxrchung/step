@@ -7,11 +7,10 @@ import {
 } from "@remix-run/node";
 import { Form, useActionData, useSubmit } from "@remix-run/react";
 import { PropsWithChildren, useEffect } from "react";
-import invariant from "tiny-invariant";
 import { uid } from "uid";
 import { authenticator } from "~/auth/authenticator.server";
 import { getSession, commitSession } from "~/auth/session.server";
-import { getStep, getStepsCount, createStep } from "~/db";
+import { getStep, getStepsCount, createStep } from "~/db.server";
 
 const MAX_STEPS = 100;
 

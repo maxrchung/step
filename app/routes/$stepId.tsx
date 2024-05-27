@@ -16,7 +16,7 @@ import { LoaderFunctionArgs, MetaFunction, json } from "@remix-run/node";
 import { useFetcher, useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { authenticator } from "~/auth/authenticator.server";
-import { getStep } from "~/db";
+import { getStep } from "~/db.server";
 import Delete from "./$stepId.delete";
 import useInitial from "~/hooks/useInitial";
 import CommonIcon from "~/icons/CommonIcon";

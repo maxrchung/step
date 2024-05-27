@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 import invariant from "tiny-invariant";
 import { authenticator } from "~/auth/authenticator.server";
 import { getSession, commitSession } from "~/auth/session.server";
-import { deleteStep, getStep } from "~/db";
+import { deleteStep, getStep } from "~/db.server";
 
 export const action: ActionFunction = async ({ params, request }) => {
   invariant(params.stepId, "Step ID is missing.");

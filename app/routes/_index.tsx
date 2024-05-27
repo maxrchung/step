@@ -10,7 +10,7 @@ import {
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { authenticator } from "~/auth/authenticator.server";
-import { getSteps } from "~/db";
+import { getSteps } from "~/db.server";
 import Create from "./create";
 import Delete from "./$stepId.delete";
 import { AddOutline, TrashOutline } from "~/icons";

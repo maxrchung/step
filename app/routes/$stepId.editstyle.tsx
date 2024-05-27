@@ -2,7 +2,7 @@ import { ActionFunction, json, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { authenticator } from "~/auth/authenticator.server";
 import { getSession, commitSession } from "~/auth/session.server";
-import { getStep, updateStyle } from "~/db";
+import { getStep, updateStyle } from "~/db.server";
 import { Style } from "~/style";
 
 export const action: ActionFunction = async ({ params, request }) => {
