@@ -1,7 +1,6 @@
 import { Authenticator } from "remix-auth";
 import { sessionStorage } from "~/auth/session.server";
 import { GoogleStrategy } from "remix-auth-google";
-import { Config } from "sst/node/config";
 
 export interface User {
   id: string;
@@ -14,15 +13,15 @@ export interface User {
 export const authenticator = new Authenticator<User>(sessionStorage);
 
 export const CALLBACK_URL =
-  Config.STAGE === "prod"
-    ? "https://step.maxrchung.com/signin/callback"
+  process.env.NODE_ENV === "production"
+    ? "https://step.max.rodeo/signin/callback"
     : "http://localhost:3000/signin/callback";
 
 authenticator.use(
   new GoogleStrategy(
     {
-      clientID: Config.GOOGLE_CLIENT_ID,
-      clientSecret: Config.GOOGLE_CLIENT_SECRET,
+      clientID: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       callbackURL: CALLBACK_URL,
     },
     async ({ profile }) => {

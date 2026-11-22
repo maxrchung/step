@@ -5,14 +5,14 @@
   "sideEffects": false,
   "scripts": {
     "build": "remix build",
-    "start": "sst bind remix-serve build/index.js",
+    "start": "remix-serve build/index.js",
     "typecheck": "tsc",
-    "sst:deploy": "sst deploy",
-    "sst:dev": "sst dev",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
     "icons": "npx @svgr/cli --out-dir app/icons -- app/icons/svg",
     "icons:watch": "npm-watch icons",
     "dev:svg": "run-s icons icons:watch",
-    "dev:remix": "sst bind remix dev",
+    "dev:remix": "remix dev",
     "dev": "run-p dev:*"
   },
   "watch": {
@@ -25,8 +25,6 @@
     }
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.540.0",
-    "@aws-sdk/lib-dynamodb": "^3.540.0",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.3",
     "@emotion/server": "^11.11.0",
@@ -36,6 +34,7 @@
     "@remix-run/serve": "^2.6.0",
     "framer-motion": "^6.5.1",
     "isbot": "^3.6.5",
+    "pg": "^8.13.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "remix-auth": "^3.6.0",
@@ -50,17 +49,15 @@
     "@svgr/plugin-jsx": "^8.1.0",
     "@svgr/plugin-prettier": "^8.1.0",
     "@svgr/plugin-svgo": "^8.1.0",
+    "@types/pg": "^8.11.10",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
-    "aws-cdk-lib": "2.132.1",
-    "constructs": "10.3.0",
     "eslint": "^8.38.0",
     "npm-run-all": "^4.1.5",
     "npm-watch": "^0.11.0",
-    "sst": "^2.41.2",
     "typescript": "^5.1.6"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=20.0.0"
   }
 }

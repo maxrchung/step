@@ -1,7 +1,6 @@
 // app/services/session.server.ts
 import { AlertStatus } from "@chakra-ui/react";
 import { SessionData, createCookieSessionStorage } from "@remix-run/node";
-import { Config } from "sst/node/config";
 
 interface FlashData {
   message: {
@@ -20,7 +19,7 @@ export const sessionStorage = createCookieSessionStorage<
     sameSite: "lax", // this helps with CSRF
     path: "/", // remember to add this so the cookie will work in all routes
     httpOnly: true, // for security reasons, make this cookie http only
-    secrets: [Config.COOKIE_SECRET], // replace this with an actual secret
+    secrets: [process.env.COOKIE_SECRET!], // replace this with an actual secret
     secure: process.env.NODE_ENV === "production", // enable this in prod only
   },
 });
